@@ -1,5 +1,6 @@
 package me.noctambulist.aasweb.common.util;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -7,14 +8,20 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * @Author: Hypocrite30
  * @Date: 2023/4/20 21:18
  */
 class JsonUtilsTest {
+
+    @Test
+    public void testNewObjectNode() {
+        JsonNode node = JsonUtils.newObjectNode();
+        assertNotNull(node);
+        assertTrue(node.isObject());
+    }
 
     @Test
     public void testToJson() throws Exception {
