@@ -36,6 +36,10 @@ public class R<T> {
         return R.builder().code(code).msg(msg).data(data).build();
     }
 
+    public static <T> R success(ResultEnum e) {
+        return R.builder().code(e.getCode()).msg(e.getMessage()).data(null).build();
+    }
+
     public static <T> R success(ResultEnum e, T data) {
         return R.builder().code(e.getCode()).msg(e.getMessage()).data(data).build();
     }
@@ -53,6 +57,10 @@ public class R<T> {
 
     public static <T> R failure(Integer code, String msg, T data) {
         return R.builder().code(code).msg(msg).data(data).build();
+    }
+
+    public static <T> R failure(ResultEnum e) {
+        return R.builder().code(e.getCode()).msg(e.getMessage()).data(null).build();
     }
 
     public static <T> R failure(ResultEnum e, T data) {
