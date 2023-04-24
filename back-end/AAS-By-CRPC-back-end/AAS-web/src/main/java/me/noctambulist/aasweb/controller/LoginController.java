@@ -1,5 +1,6 @@
 package me.noctambulist.aasweb.controller;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import me.noctambulist.aasweb.common.exception.CustomException;
@@ -13,10 +14,13 @@ import me.noctambulist.aasweb.service.AccountService;
 import me.noctambulist.aasweb.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.ObjectUtils;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.constraints.NotNull;
 import java.security.NoSuchAlgorithmException;
 
 /**
@@ -36,8 +40,11 @@ public class LoginController {
         this.roleService = roleService;
     }
 
+    // =========================================================================================
+
     @PostMapping("/login")
-    public R login(@RequestBody LoginParam param) {
+    @ResponseBody
+    public R login(@RequestBody @Validated final LoginParam param) {
         Account account = accountService.findByUniqueId(param.id);
         if (ObjectUtils.isEmpty(account)) {
             return R.failure(ResultEnum.ACCOUNT_NOT_EXISTS);
@@ -58,9 +65,12 @@ public class LoginController {
         return R.success(ResultEnum.SUCCESS, JsonUtils.newObjectNode().put("role", role.getRole()));
     }
 
+    @JsonIgnoreProperties(ignoreUnknown = true)
     @Data
     public static class LoginParam {
+        @NotNull(message = "账号名不能为空")
         Long id;
+        @NotNull(message = "密码不能为空")
         String password;
     }
 

@@ -6,13 +6,16 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import me.noctambulist.aasweb.entity.dto.RoleDTO;
 import org.hibernate.annotations.DynamicInsert;
+import org.springframework.beans.BeanUtils;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.Table;
 import java.util.Objects;
 
@@ -21,7 +24,10 @@ import java.util.Objects;
  * @Date: 2023/4/22 22:53
  */
 @Entity
-@Table(name = "role")
+@Table(name = "role", indexes = {
+        @Index(name = "idx_role", columnList = "role"),
+        @Index(name = "idx_unique_id", columnList = "unique_id", unique = true)
+})
 @DynamicInsert
 @Getter
 @Setter
@@ -53,6 +59,12 @@ public class Role {
     @Override
     public int hashCode() {
         return Objects.hash(id, uniqueId, role);
+    }
+
+    public static RoleDTO entityToDTO(Role role) {
+        RoleDTO dto = new RoleDTO();
+        BeanUtils.copyProperties(role, dto);
+        return dto;
     }
 
 }

@@ -13,6 +13,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.Table;
 import java.util.Objects;
 
@@ -21,7 +22,10 @@ import java.util.Objects;
  * @Date: 2023/4/21 13:52
  */
 @Entity
-@Table(name = "account")
+@Table(name = "account", indexes = {
+        @Index(name = "idx_password", columnList = "password"),
+        @Index(name = "idx_unique_id", columnList = "unique_id", unique = true)
+})
 @DynamicInsert
 @Getter
 @Setter

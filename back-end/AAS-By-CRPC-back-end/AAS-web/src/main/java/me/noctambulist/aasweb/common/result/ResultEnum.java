@@ -15,7 +15,9 @@ public enum ResultEnum {
     FORBIDDEN(403, "禁止访问"),
     NOT_FOUND(404, "请求资源不存在"),
     ACCOUNT_NOT_EXISTS(404, "账户不存在"),
+    STUDENT_NOT_EXISTS(404, "学生信息不存在"),
     METHOD_NOT_ALLOWED(405, "不支持该请求方法"),
+    CONFLICT(409, "请求与服务器上现有的资源冲突"),
     INTERNAL_SERVER_ERROR(500, "服务器内部错误"),
     SERVICE_UNAVAILABLE(503, "服务不可用"),
     UNKNOWN_ERROR(-1, "未知错误");

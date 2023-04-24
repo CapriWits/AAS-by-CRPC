@@ -28,6 +28,13 @@ public class R<T> {
                 .data(null).build();
     }
 
+    public static <T> R success(T data) {
+        return R.builder()
+                .code(ResultEnum.SUCCESS.getCode())
+                .msg(ResultEnum.SUCCESS.getMessage())
+                .data(data).build();
+    }
+
     public static R success(Integer code, String msg) {
         return R.builder().code(code).msg(msg).data(null).build();
     }
@@ -49,6 +56,13 @@ public class R<T> {
                 .code(ResultEnum.UNKNOWN_ERROR.getCode())
                 .msg(ResultEnum.UNKNOWN_ERROR.getMessage())
                 .data(null).build();
+    }
+
+    public static <T> R failure(T data) {
+        return R.builder()
+                .code(ResultEnum.UNKNOWN_ERROR.getCode())
+                .msg(ResultEnum.UNKNOWN_ERROR.getMessage())
+                .data(data).build();
     }
 
     public static R failure(Integer code, String msg) {

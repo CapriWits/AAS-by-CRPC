@@ -11,7 +11,7 @@
  Target Server Version : 50735
  File Encoding         : 65001
 
- Date: 22/04/2023 15:08:17
+ Date: 24/04/2023 19:33:54
 */
 
 SET NAMES utf8mb4;
@@ -29,8 +29,8 @@ CREATE TABLE `account`  (
   `created_at` timestamp(0) NULL DEFAULT NULL COMMENT '创建时间',
   `updated_at` timestamp(0) NULL DEFAULT NULL COMMENT '最后更新时间',
   PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `id_uniqueId`(`id`, `unique_id`) USING BTREE,
-  INDEX `password`(`password`) USING BTREE
+  INDEX `password`(`password`) USING BTREE,
+  UNIQUE INDEX `uniqueId`(`unique_id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '账户信息表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -42,7 +42,7 @@ CREATE TABLE `coupon`  (
   `unique_id` bigint(15) NOT NULL COMMENT '学生 或 教师 id',
   `coupon` double NULL DEFAULT NULL COMMENT '学生券',
   PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `id_uniqueId`(`id`, `unique_id`) USING BTREE
+  UNIQUE INDEX `uniqueId`(`unique_id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '学分券表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -54,8 +54,8 @@ CREATE TABLE `role`  (
   `unique_id` bigint(15) NOT NULL COMMENT '学生 或 教师 id',
   `role` tinyint(10) NULL DEFAULT 0 COMMENT '角色。0 - 学生，1 - 教师，2 - 管理员',
   PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `id_uniqueId`(`id`, `unique_id`) USING BTREE,
-  INDEX `role`(`role`) USING BTREE
+  INDEX `role`(`role`) USING BTREE,
+  UNIQUE INDEX `uniqueId`(`unique_id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '角色表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -71,8 +71,8 @@ CREATE TABLE `score`  (
   `created_at` timestamp(0) NULL DEFAULT NULL COMMENT '创建时间',
   `updated_at` timestamp(0) NULL DEFAULT NULL COMMENT '最后更新时间',
   PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `id_studentId`(`id`, `student_id`) USING BTREE,
-  INDEX `courseId_courseNum`(`course_id`, `course_number`) USING BTREE
+  INDEX `courseId_courseNum`(`course_id`, `course_number`) USING BTREE,
+  UNIQUE INDEX `studentId`(`student_id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '学生成绩表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -109,8 +109,8 @@ CREATE TABLE `student_info`  (
   `created_at` timestamp(0) NULL DEFAULT NULL COMMENT '创建时间',
   `updated_at` timestamp(0) NULL DEFAULT NULL COMMENT '最后更新时间',
   PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `id_uniqueId_idCardNum`(`id`, `unique_id`, `id_card_num`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '学生信息表' ROW_FORMAT = Dynamic;
+  UNIQUE INDEX `uniqueId_idCardNum`(`unique_id`, `id_card_num`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '学生信息表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for teaching_evaluation
@@ -143,8 +143,8 @@ CREATE TABLE `tutor_info`  (
   `created_at` timestamp(0) NULL DEFAULT NULL COMMENT '创建时间',
   `updated_at` timestamp(0) NULL DEFAULT NULL COMMENT '最后更新时间',
   PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `id_uniqueId`(`id`, `unique_id`) USING BTREE,
-  INDEX `name`(`name`) USING BTREE
+  INDEX `name`(`name`) USING BTREE,
+  UNIQUE INDEX `uniqueId`(`unique_id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '教师信息表' ROW_FORMAT = Dynamic;
 
 SET FOREIGN_KEY_CHECKS = 1;

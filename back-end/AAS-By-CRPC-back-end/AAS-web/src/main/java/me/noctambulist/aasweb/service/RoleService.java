@@ -4,6 +4,7 @@ import me.noctambulist.aasweb.entity.Role;
 import me.noctambulist.aasweb.repository.IRole;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -21,8 +22,9 @@ public class RoleService {
         this.iRole = iRole;
     }
 
+    @Transactional
     public Role create(Role role) {
-        return iRole.save(role);
+        return iRole.saveAndFlush(role);
     }
 
     public List<Role> findAll() {
