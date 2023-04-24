@@ -8,16 +8,15 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import me.noctambulist.aasweb.entity.Role;
+import me.noctambulist.aasweb.entity.Account;
 
-import java.io.Serializable;
 import java.util.Objects;
 
 /**
- * Same as {@link Role}, except for an {@link Role#getId()}
+ * Same as {@link Account}, except for an {@link Account#getId()}
  *
  * @Author: Hypocrite30
- * @Date: 2023/4/24 21:29
+ * @Date: 2023/4/24 22:38
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Getter
@@ -26,27 +25,28 @@ import java.util.Objects;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class RoleDTO implements Serializable {
-
-    private static final long serialVersionUID = -3037615114235729825L;
+public class AccountDTO {
 
     @JsonProperty("unique_id")
     private Long uniqueId;
 
-    @JsonProperty("role")
-    private Byte role;
+    @JsonProperty("email")
+    private String email;
+
+    @JsonProperty("password")
+    private String password;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        RoleDTO roleDTO = (RoleDTO) o;
-        return Objects.equals(uniqueId, roleDTO.uniqueId) && Objects.equals(role, roleDTO.role);
+        AccountDTO that = (AccountDTO) o;
+        return Objects.equals(uniqueId, that.uniqueId) && Objects.equals(email, that.email) && Objects.equals(password, that.password);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(uniqueId, role);
+        return Objects.hash(uniqueId, email, password);
     }
 
 }

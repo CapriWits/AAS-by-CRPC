@@ -6,7 +6,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import me.noctambulist.aasweb.entity.dto.AccountDTO;
 import org.hibernate.annotations.DynamicInsert;
+import org.springframework.beans.BeanUtils;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -61,6 +63,12 @@ public class Account extends BaseEntity {
     @Override
     public int hashCode() {
         return Objects.hash(super.hashCode(), id, uniqueId, email, password);
+    }
+
+    public static AccountDTO entity2DTO(Account account) {
+        AccountDTO dto = new AccountDTO();
+        BeanUtils.copyProperties(account, dto);
+        return dto;
     }
 
 }
