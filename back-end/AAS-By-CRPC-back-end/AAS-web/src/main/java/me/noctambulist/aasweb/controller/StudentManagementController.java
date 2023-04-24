@@ -126,4 +126,20 @@ public class StudentManagementController {
         String trainningLevel = "本科";
     }
 
+    // =========================================================================================
+
+    @PostMapping("/delete_student_info")
+    @ResponseBody
+    public R deleteStudentInfo(@RequestBody @Validated final DeleteStudentInfoParam param) {
+        studentInfoService.deleteByUniqueId(param.id);
+        return R.success();
+    }
+
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    @Data
+    public static class DeleteStudentInfoParam {
+        @NotNull(message = "身份 id 不能为空")
+        Long id;
+    }
+
 }

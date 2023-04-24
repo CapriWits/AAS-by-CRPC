@@ -31,15 +31,12 @@ public class RoleService {
         return iRole.findAll();
     }
 
-    public Role findById(Integer id) {
-        return iRole.findById(id).orElse(null);
-    }
-
     public Role findByUniqueId(Long id) {
         return iRole.findByUniqueId(id).orElse(null);
     }
 
-    public void delete(Integer id) {
-        iRole.deleteById(id);
+    public void deleteByUniqueId(Long id) {
+        iRole.deleteByUniqueId(id);
     }
+
 }

@@ -45,16 +45,8 @@ public class StudentInfoService {
         }
     }
 
-    public void deleteById(Integer id) {
-        iStudentInfo.deleteById(id);
-    }
-
     public void deleteByUniqueId(Long id) {
         iStudentInfo.deleteByUniqueId(id);
-    }
-
-    public StudentInfo findById(Integer id) {
-        return iStudentInfo.findById(id).orElse(null);
     }
 
     public StudentInfo findByUniqueId(Long uniqueId) {

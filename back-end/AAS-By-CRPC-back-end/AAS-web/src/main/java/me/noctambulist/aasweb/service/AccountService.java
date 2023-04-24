@@ -43,4 +43,8 @@ public class AccountService {
         iAccount.deleteById(id);
     }
 
+    public void deleteByUniqueId(Long uniqueId) {
+        iAccount.deleteByUniqueId(uniqueId);
+    }
+
 }

@@ -19,8 +19,6 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 /**
@@ -74,17 +72,6 @@ class RoleServiceTest {
 
     @Test
     @Order(3)
-    public void should_find_by_id() {
-        int id = 1;
-        when(iRole.findById(id)).thenReturn(Optional.ofNullable(ROLES.get(id - 1)));
-
-        Role result = roleService.findById(id);
-
-        assertEquals(result, ROLES.get(id - 1));
-    }
-
-    @Test
-    @Order(4)
     public void should_find_by_unique_id() {
         long uniqueId = 2L;
         when(iRole.findByUniqueId(uniqueId)).thenReturn(Optional.ofNullable(ROLES.get(1)));
@@ -92,16 +79,6 @@ class RoleServiceTest {
         Role result = roleService.findByUniqueId(uniqueId);
 
         assertEquals(result, ROLES.get(1));
-    }
-
-    @Test
-    @Order(5)
-    public void should_delete_role() {
-        int id = 3;
-
-        roleService.delete(id);
-
-        verify(iRole, times(1)).deleteById(id);
     }
 
 }

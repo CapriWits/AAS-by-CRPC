@@ -3,7 +3,9 @@ package me.noctambulist.aasweb.repository;
 import me.noctambulist.aasweb.entity.Role;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -16,4 +18,7 @@ public interface IRole extends JpaRepository<Role, Integer>, JpaSpecificationExe
 
     Optional<Role> findByUniqueId(Long id);
 
+    @Modifying
+    @Transactional
+    void deleteByUniqueId(Long id);
 }

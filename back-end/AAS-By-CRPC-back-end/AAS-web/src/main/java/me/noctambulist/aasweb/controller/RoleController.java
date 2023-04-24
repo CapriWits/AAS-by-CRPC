@@ -63,4 +63,20 @@ public class RoleController {
         Byte role;
     }
 
+    // =========================================================================================
+
+    @PostMapping("/delete_role")
+    @ResponseBody
+    public R deleteRole(@RequestBody @Validated final DeleteRoleParam param) {
+        roleService.deleteByUniqueId(param.id);
+        return R.success();
+    }
+
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    @Data
+    public static class DeleteRoleParam {
+        @NotNull(message = "身份 id 不能为空")
+        Long id;
+    }
+
 }

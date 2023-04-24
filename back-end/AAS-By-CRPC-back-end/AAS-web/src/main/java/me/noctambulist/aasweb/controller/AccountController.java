@@ -55,4 +55,20 @@ public class AccountController {
         @NotNull(message = "密码不能为空")
         String password;
     }
+
+    // =========================================================================================
+
+    @PostMapping("/delete_account")
+    @ResponseBody
+    public R deleteAccount(@RequestBody @Validated final DeleteAccountParam param) {
+        accountService.deleteByUniqueId(param.id);
+        return R.success();
+    }
+
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    @Data
+    public static class DeleteAccountParam {
+        @NotNull(message = "身份 id 不能为空")
+        Long id;
+    }
 }
