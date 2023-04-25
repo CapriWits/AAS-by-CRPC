@@ -49,12 +49,12 @@ public class LoginController {
         if (ObjectUtils.isEmpty(account)) {
             return R.failure(ResultEnum.ACCOUNT_NOT_EXISTS);
         }
-        String encodedPassword = null;
+        String encodedPassword;
         try {
             encodedPassword = MD5Utils.encode(param.password);
         } catch (NoSuchAlgorithmException e) {
-            log.error("MD5 encode error. Param password: [{}], encode: [{}], database md5: [{}]",
-                    param.password, encodedPassword, account.getPassword());
+            log.error("MD5 encode error. Param password: [{}], database md5: [{}]",
+                    param.password, account.getPassword(), e);
             throw new CustomException(ResultEnum.INTERNAL_SERVER_ERROR);
         }
         if (!ObjectUtils.nullSafeEquals(account.getPassword(), encodedPassword)) {

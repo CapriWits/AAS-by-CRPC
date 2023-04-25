@@ -142,4 +142,54 @@ public class StudentManagementController {
         Long id;
     }
 
+    // =========================================================================================
+
+    /**
+     * Update Student information
+     * <p>
+     * If StudentInfo is not exists, return {@link ResultEnum#STUDENT_NOT_EXISTS}
+     *
+     * @param param {@link UpdateStudentInfoParam}
+     * @return {@link R#success()}
+     */
+    @PostMapping("/update_student_info")
+    @ResponseBody
+    public R updateAccount(@RequestBody @Validated final UpdateStudentInfoParam param) {
+        StudentInfo studentInfo = StudentInfo.builder().uniqueId(param.getUniqueId()).name(param.getName())
+                .idCardNum(param.getIdCardNum()).phone(param.getPhone()).gender(param.getGender())
+                .nationality(param.getNationality()).birthday(param.getBirthday()).examFrom(param.getExamFrom())
+                .gaokaoScore(param.getGaokaoScore()).graduatedSchool(param.getGraduatedSchool())
+                .department(param.getDepartment()).major(param.getMajor()).campus(param.getCampus())
+                .clazz(param.getClazz()).trainningLevel(param.getTrainningLevel()).build();
+        studentInfoService.update(param.uniqueId, studentInfo);
+        return R.success();
+    }
+
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    @Data
+    public static class UpdateStudentInfoParam {
+        @JsonProperty("unique_id")
+        Long uniqueId;
+        String name;
+        @JsonProperty("id_card_num")
+        String idCardNum;
+        String phone;
+        String gender;
+        String nationality = "汉族";
+        String birthday;
+        @JsonProperty("exam_from")
+        String examFrom;
+        @JsonProperty("gaokao_score")
+        Double gaokaoScore;
+        @JsonProperty("graduated_school")
+        String graduatedSchool;
+        String department;
+        String major;
+        String campus;
+        @JsonProperty("class")
+        String clazz;
+        @JsonProperty("trainning_level")
+        String trainningLevel = "本科";
+    }
+
 }

@@ -39,8 +39,9 @@ public class GlobalExceptionHandler {
     public R handleHandleCustomException(MethodArgumentNotValidException ex) {
         List<ObjectError> allErrors = ex.getBindingResult().getAllErrors();
         allErrors.forEach(error -> {
-            log.error("Method argument not valid. Details: [{}]", error.getDefaultMessage());
+            log.error("Method argument not valid. Details: [{}]", error.getDefaultMessage(), ex);
         });
+        log.error("MethodArgumentNotValidException: ", ex);
         return R.failure(ResultEnum.BAD_REQUEST);
     }
 
@@ -55,7 +56,7 @@ public class GlobalExceptionHandler {
     @ResponseBody
     public R handleHandleCustomException(DataIntegrityViolationException ex) {
         log.error("Data violates integrity constraints in the database (e.g., uniqueness, foreign keys, etc.)",
-                ex.getMessage());
+                ex.getMessage(), ex);
         return R.failure(ResultEnum.CONFLICT);
     }
 

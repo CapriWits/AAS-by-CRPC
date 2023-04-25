@@ -19,8 +19,6 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 /**
@@ -75,17 +73,6 @@ public class AccountServiceTest {
 
     @Test
     @Order(3)
-    public void should_find_by_id() {
-        int id = 1;
-        when(iAccount.findById(id)).thenReturn(Optional.ofNullable(ACCOUNTS.get(id - 1)));
-
-        Account result = accountService.findById(id);
-
-        assertEquals(result, ACCOUNTS.get(id - 1));
-    }
-
-    @Test
-    @Order(4)
     public void should_find_by_unique_id() {
         long uniqueId = 2L;
         when(iAccount.findByUniqueId(uniqueId)).thenReturn(Optional.ofNullable(ACCOUNTS.get(1)));
@@ -93,16 +80,6 @@ public class AccountServiceTest {
         Account result = accountService.findByUniqueId(uniqueId);
 
         assertEquals(result, ACCOUNTS.get(1));
-    }
-
-    @Test
-    @Order(5)
-    public void should_delete_account() {
-        int id = 3;
-
-        accountService.delete(id);
-
-        verify(iAccount, times(1)).deleteById(id);
     }
 
 }

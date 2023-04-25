@@ -1,6 +1,7 @@
 package me.noctambulist.aasweb.service;
 
 import me.noctambulist.aasweb.common.exception.CustomException;
+import me.noctambulist.aasweb.common.result.ResultEnum;
 import me.noctambulist.aasweb.controller.StudentManagementController.GetStudentInfoListParam;
 import me.noctambulist.aasweb.controller.StudentManagementController.GetStudentInfoListParam.GetStudentInfoFilter;
 import me.noctambulist.aasweb.entity.StudentInfo;
@@ -35,13 +36,14 @@ public class StudentInfoService {
         return iStudentInfo.saveAndFlush(studentInfo);
     }
 
-    public StudentInfo updateById(Integer id, StudentInfo studentInfo) {
-        Optional<StudentInfo> optionalStudentInfo = iStudentInfo.findById(id);
+    @Transactional
+    public StudentInfo update(Long uniqueId, StudentInfo studentInfo) {
+        Optional<StudentInfo> optionalStudentInfo = iStudentInfo.findByUniqueId(uniqueId);
         if (optionalStudentInfo.isPresent()) {
-            studentInfo.setId(id);
-            return iStudentInfo.save(studentInfo);
+            studentInfo.setId(optionalStudentInfo.get().getId());
+            return iStudentInfo.saveAndFlush(studentInfo);
         } else {
-            throw new CustomException(404, "学生信息不存在");
+            throw new CustomException(ResultEnum.STUDENT_NOT_EXISTS);
         }
     }
 
