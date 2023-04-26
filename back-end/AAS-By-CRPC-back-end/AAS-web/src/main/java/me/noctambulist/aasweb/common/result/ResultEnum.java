@@ -16,6 +16,7 @@ public enum ResultEnum {
     NOT_FOUND(404, "请求资源不存在"),
     ACCOUNT_NOT_EXISTS(404, "账户不存在"),
     STUDENT_NOT_EXISTS(404, "学生信息不存在"),
+    TUTOR_NOT_EXISTS(404, "老师信息不存在"),
     METHOD_NOT_ALLOWED(405, "不支持该请求方法"),
     CONFLICT(409, "请求与服务器上现有的资源冲突"),
     INTERNAL_SERVER_ERROR(500, "服务器内部错误"),
