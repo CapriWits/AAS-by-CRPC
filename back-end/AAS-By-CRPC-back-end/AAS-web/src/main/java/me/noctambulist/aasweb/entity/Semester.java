@@ -14,6 +14,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.io.Serializable;
 import java.util.Objects;
 
 /**
@@ -29,7 +30,9 @@ import java.util.Objects;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Semester {
+public class Semester implements Serializable {
+
+    private static final long serialVersionUID = -5101954679784531107L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
