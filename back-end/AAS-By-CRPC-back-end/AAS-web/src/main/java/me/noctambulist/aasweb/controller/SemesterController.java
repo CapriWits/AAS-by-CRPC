@@ -1,9 +1,12 @@
 package me.noctambulist.aasweb.controller;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
+import me.noctambulist.aasweb.common.exception.CustomException;
 import me.noctambulist.aasweb.common.exception.GlobalExceptionHandler;
 import me.noctambulist.aasweb.common.result.R;
 import me.noctambulist.aasweb.common.result.ResultEnum;
@@ -90,6 +93,45 @@ public class SemesterController {
         List<Semester> semesters = semesterService.findAll();
         ArrayNode arrayNode = JsonUtils.fromJson(JsonUtils.toJson(semesters), ArrayNode.class);
         return R.success(JsonUtils.newObjectNode().set("semester_info", arrayNode));
+    }
+
+    // =========================================================================================
+
+    @PostMapping("/set_current_semester")
+    @ResponseBody
+    public R setCurrentSemester(@RequestBody @Validated final SetCurrentSemesterParam param) {
+        try {
+            semesterService.setCurrentSemester(JsonUtils.toJson(param));
+        } catch (JsonProcessingException e) {
+            log.error("Json process error.", e);
+            throw new CustomException(ResultEnum.INTERNAL_SERVER_ERROR);
+        }
+        return R.success();
+    }
+
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    @Data
+    public static class SetCurrentSemesterParam {
+        @NotNull(message = "学期 id 不能为空")
+        Integer id;
+        @NotNull(message = "学期信息不能为空")
+        String semester;
+    }
+
+    // =========================================================================================
+
+    @PostMapping("/get_current_semester")
+    @ResponseBody
+    public R getCurrentSemester() {
+        String json = semesterService.getCurrentSemester();
+        JsonNode semester;
+        try {
+            semester = JsonUtils.toJsonNode(json);
+        } catch (IOException e) {
+            log.error("Json process error.", e);
+            throw new CustomException(ResultEnum.INTERNAL_SERVER_ERROR);
+        }
+        return R.success(JsonUtils.newObjectNode().set("semester_info", semester));
     }
 
 }

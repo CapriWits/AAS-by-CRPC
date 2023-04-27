@@ -1,8 +1,10 @@
 package me.noctambulist.aasweb.service;
 
+import me.noctambulist.aasweb.common.constant.RedisConstants;
 import me.noctambulist.aasweb.entity.Semester;
 import me.noctambulist.aasweb.repository.ISemester;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,10 +18,12 @@ import java.util.List;
 public class SemesterService {
 
     private final ISemester iSemester;
+    private final StringRedisTemplate redisTemplate;
 
     @Autowired
-    public SemesterService(ISemester iSemester) {
+    public SemesterService(ISemester iSemester, StringRedisTemplate redisTemplate) {
         this.iSemester = iSemester;
+        this.redisTemplate = redisTemplate;
     }
 
     @Transactional
@@ -33,6 +37,14 @@ public class SemesterService {
 
     public List<Semester> findAll() {
         return iSemester.findAll();
+    }
+
+    public void setCurrentSemester(String json) {
+        redisTemplate.opsForValue().set(RedisConstants.CURRENT_SEMESTER, json);
+    }
+
+    public String getCurrentSemester() {
+        return redisTemplate.opsForValue().get(RedisConstants.CURRENT_SEMESTER);
     }
 
 }
