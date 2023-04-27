@@ -11,7 +11,7 @@
  Target Server Version : 50735
  File Encoding         : 65001
 
- Date: 24/04/2023 19:33:54
+ Date: 27/04/2023 11:24:04
 */
 
 SET NAMES utf8mb4;
@@ -29,9 +29,31 @@ CREATE TABLE `account`  (
   `created_at` timestamp(0) NULL DEFAULT NULL COMMENT '创建时间',
   `updated_at` timestamp(0) NULL DEFAULT NULL COMMENT '最后更新时间',
   PRIMARY KEY (`id`) USING BTREE,
-  INDEX `password`(`password`) USING BTREE,
-  UNIQUE INDEX `uniqueId`(`unique_id`) USING BTREE
+  UNIQUE INDEX `uniqueId`(`unique_id`) USING BTREE,
+  INDEX `password`(`password`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '账户信息表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for class_schedule
+-- ----------------------------
+DROP TABLE IF EXISTS `class_schedule`;
+CREATE TABLE `class_schedule`  (
+  `id` int(10) NOT NULL COMMENT '课程表 id',
+  `course_id` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '课程号',
+  `course_num` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '课序号',
+  `student_id` bigint(15) NULL DEFAULT NULL COMMENT '学生 id',
+  `tutor_id` bigint(15) NULL DEFAULT NULL COMMENT '教师 id',
+  `semester_id` int(10) NULL DEFAULT NULL COMMENT '学期 id',
+  `score_id` int(10) NULL DEFAULT NULL COMMENT '成绩 id',
+  `status` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '选中' COMMENT '选课状态。\"选中\" | \"已退课\"',
+  `class_info` json NULL COMMENT '课程信息',
+  `created_at` timestamp(0) NULL DEFAULT NULL COMMENT '创建时间',
+  `updated_at` timestamp(0) NULL DEFAULT NULL COMMENT '最后更新时间',
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `courseId_courseNum`(`course_id`, `course_num`) USING BTREE,
+  INDEX `studentId_tutorId`(`student_id`, `tutor_id`) USING BTREE,
+  INDEX `semesterId_scoreId`(`semester_id`, `score_id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '课程表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for coupon
@@ -39,11 +61,27 @@ CREATE TABLE `account`  (
 DROP TABLE IF EXISTS `coupon`;
 CREATE TABLE `coupon`  (
   `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '表主键',
-  `unique_id` bigint(15) NOT NULL COMMENT '学生 或 教师 id',
-  `coupon` double NULL DEFAULT NULL COMMENT '学生券',
+  `student_id` bigint(15) NOT NULL COMMENT '学生 id',
+  `coupon` double NULL DEFAULT 0 COMMENT '学生券',
+  `created_at` timestamp(0) NULL DEFAULT NULL COMMENT '创建时间',
+  `updated_at` timestamp(0) NULL DEFAULT NULL COMMENT '最后更新时间',
   PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `uniqueId`(`unique_id`) USING BTREE
+  UNIQUE INDEX `uniqueId`(`student_id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '学分券表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for course_order
+-- ----------------------------
+DROP TABLE IF EXISTS `course_order`;
+CREATE TABLE `course_order`  (
+  `id` int(10) NOT NULL COMMENT '订单表 id',
+  `student_id` bigint(15) NOT NULL COMMENT '学生 id',
+  `total_credit` double NULL DEFAULT NULL COMMENT '总学分',
+  `classes` json NULL COMMENT '课程信息。如：[{\"course_id\":\"\",\"course_num\":\"\",\"credit\":1,\"name\":\"\"}]',
+  `created_at` timestamp(0) NULL DEFAULT NULL COMMENT '创建时间',
+  `updated_at` timestamp(0) NULL DEFAULT NULL COMMENT '最后更新时间',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '选课订单表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for role
@@ -54,8 +92,8 @@ CREATE TABLE `role`  (
   `unique_id` bigint(15) NOT NULL COMMENT '学生 或 教师 id',
   `role` tinyint(10) NULL DEFAULT 0 COMMENT '角色。0 - 学生，1 - 教师，2 - 管理员',
   PRIMARY KEY (`id`) USING BTREE,
-  INDEX `role`(`role`) USING BTREE,
-  UNIQUE INDEX `uniqueId`(`unique_id`) USING BTREE
+  UNIQUE INDEX `uniqueId`(`unique_id`) USING BTREE,
+  INDEX `role`(`role`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '角色表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -63,16 +101,11 @@ CREATE TABLE `role`  (
 -- ----------------------------
 DROP TABLE IF EXISTS `score`;
 CREATE TABLE `score`  (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '表 id',
-  `student_id` bigint(15) NOT NULL COMMENT '学生 id',
-  `course_id` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '课程号',
-  `course_number` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '课序号',
-  `score` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '成绩',
+  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '成绩表 id',
+  `score` double NULL DEFAULT 0 COMMENT '成绩',
   `created_at` timestamp(0) NULL DEFAULT NULL COMMENT '创建时间',
   `updated_at` timestamp(0) NULL DEFAULT NULL COMMENT '最后更新时间',
-  PRIMARY KEY (`id`) USING BTREE,
-  INDEX `courseId_courseNum`(`course_id`, `course_number`) USING BTREE,
-  UNIQUE INDEX `studentId`(`student_id`) USING BTREE
+  PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '学生成绩表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -82,8 +115,9 @@ DROP TABLE IF EXISTS `semester`;
 CREATE TABLE `semester`  (
   `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '学期 id',
   `semester` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '学期',
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '学期信息表' ROW_FORMAT = Dynamic;
+  PRIMARY KEY (`id`) USING BTREE,
+  UNIQUE INDEX `semester`(`semester`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '学期信息表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for student_info
@@ -110,21 +144,7 @@ CREATE TABLE `student_info`  (
   `updated_at` timestamp(0) NULL DEFAULT NULL COMMENT '最后更新时间',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `uniqueId_idCardNum`(`unique_id`, `id_card_num`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '学生信息表' ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Table structure for teaching_evaluation
--- ----------------------------
-DROP TABLE IF EXISTS `teaching_evaluation`;
-CREATE TABLE `teaching_evaluation`  (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '评估 id',
-  `semester_id` int(10) NULL DEFAULT NULL COMMENT '评估学期 id',
-  `evaluatee` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '被评估人',
-  `finished` tinyint(3) NULL DEFAULT NULL COMMENT '是否已完成评估。0 - 未完成，1 - 已完成',
-  `content` json NULL COMMENT '教学评估内容',
-  PRIMARY KEY (`id`) USING BTREE,
-  INDEX `id_semester_id`(`id`, `semester_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '教学评估表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '学生信息表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for tutor_info
@@ -143,8 +163,8 @@ CREATE TABLE `tutor_info`  (
   `created_at` timestamp(0) NULL DEFAULT NULL COMMENT '创建时间',
   `updated_at` timestamp(0) NULL DEFAULT NULL COMMENT '最后更新时间',
   PRIMARY KEY (`id`) USING BTREE,
-  INDEX `name`(`name`) USING BTREE,
-  UNIQUE INDEX `uniqueId`(`unique_id`) USING BTREE
+  UNIQUE INDEX `uniqueId`(`unique_id`) USING BTREE,
+  INDEX `name`(`name`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '教师信息表' ROW_FORMAT = Dynamic;
 
 SET FOREIGN_KEY_CHECKS = 1;

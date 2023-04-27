@@ -5,6 +5,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.io.IOException;
@@ -26,6 +27,10 @@ public class JsonUtils {
 
     public static ObjectNode newObjectNode() {
         return mapper.createObjectNode();
+    }
+
+    public static ArrayNode newArrayNode() {
+        return mapper.createArrayNode();
     }
 
     public static String toJson(Object object) throws JsonProcessingException {
