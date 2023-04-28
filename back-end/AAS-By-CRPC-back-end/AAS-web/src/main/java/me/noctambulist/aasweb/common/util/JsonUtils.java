@@ -57,4 +57,8 @@ public class JsonUtils {
         return mapper.readTree(json);
     }
 
+    public static JsonNode objectToJsonNode(Object object) {
+        return mapper.valueToTree(object);
+    }
+
 }
