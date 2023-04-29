@@ -17,6 +17,7 @@
         <module>AAS-web</module>
         <module>AAS-model</module>
         <module>AAS-common</module>
+        <module>AAS-data-query-service</module>
     </modules>
 
     <properties>
