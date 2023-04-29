@@ -2,13 +2,12 @@ package me.noctambulist.aasweb.service;
 
 import me.noctambulist.aasweb.common.exception.CustomException;
 import me.noctambulist.aasweb.common.result.ResultEnum;
-import me.noctambulist.aasweb.entity.Account;
 import me.noctambulist.aasweb.repository.IAccount;
+import me.noctambulist.aasweb.model.Account;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,12 +19,10 @@ import java.util.Optional;
 public class AccountService {
 
     private final IAccount iAccount;
-    private final EntityManager entityManager;
 
     @Autowired
-    public AccountService(IAccount iAccount, EntityManager entityManager) {
+    public AccountService(IAccount iAccount) {
         this.iAccount = iAccount;
-        this.entityManager = entityManager;
     }
 
     @Transactional

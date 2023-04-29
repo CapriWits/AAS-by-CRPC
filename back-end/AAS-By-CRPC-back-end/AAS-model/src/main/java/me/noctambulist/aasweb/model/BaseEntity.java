@@ -1,6 +1,8 @@
-package me.noctambulist.aasweb.entity;
+package me.noctambulist.aasweb.model;
 
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -14,6 +16,8 @@ import java.sql.Timestamp;
  * @Author: Hypocrite30
  * @Date: 2023/4/21 13:45
  */
+@Getter
+@Setter
 @MappedSuperclass
 @Data
 @EntityListeners(AuditingEntityListener.class)

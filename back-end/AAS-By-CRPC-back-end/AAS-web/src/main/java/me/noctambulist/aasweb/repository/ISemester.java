@@ -1,6 +1,6 @@
 package me.noctambulist.aasweb.repository;
 
-import me.noctambulist.aasweb.entity.Semester;
+import me.noctambulist.aasweb.model.Semester;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;

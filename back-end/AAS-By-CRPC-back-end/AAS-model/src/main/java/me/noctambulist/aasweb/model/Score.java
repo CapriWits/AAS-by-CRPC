@@ -1,4 +1,4 @@
-package me.noctambulist.aasweb.entity;
+package me.noctambulist.aasweb.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,10 +19,10 @@ import java.util.Objects;
 
 /**
  * @Author: Hypocrite30
- * @Date: 2023/4/26 22:33
+ * @Date: 2023/4/28 10:56
  */
 @Entity
-@Table(name = "semester")
+@Table(name = "score")
 @DynamicInsert
 @Getter
 @Setter
@@ -30,29 +30,30 @@ import java.util.Objects;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Semester implements Serializable {
+public class Score extends BaseEntity implements Serializable {
 
-    private static final long serialVersionUID = -5101954679784531107L;
+    private static final long serialVersionUID = 2842613312990983278L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Integer id;
 
-    @Column(name = "semester")
-    private String semester;
+    @Column(name = "score")
+    private Double score = 0d;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Semester semester1 = (Semester) o;
-        return Objects.equals(id, semester1.id) && Objects.equals(semester, semester1.semester);
+        if (!super.equals(o)) return false;
+        Score score1 = (Score) o;
+        return Objects.equals(id, score1.id) && Objects.equals(score, score1.score);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, semester);
+        return Objects.hash(super.hashCode(), id, score);
     }
 
 }

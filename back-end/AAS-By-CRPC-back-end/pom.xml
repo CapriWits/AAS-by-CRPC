@@ -15,6 +15,7 @@
     <packaging>pom</packaging>
     <modules>
         <module>AAS-web</module>
+        <module>AAS-model</module>
     </modules>
 
     <properties>

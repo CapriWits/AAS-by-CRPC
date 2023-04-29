@@ -1,6 +1,6 @@
 package me.noctambulist.aasweb.repository;
 
-import me.noctambulist.aasweb.entity.Score;
+import me.noctambulist.aasweb.model.Score;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;

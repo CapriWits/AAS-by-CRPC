@@ -1,7 +1,7 @@
 package me.noctambulist.aasweb.service;
 
-import me.noctambulist.aasweb.entity.Role;
 import me.noctambulist.aasweb.repository.IRole;
+import me.noctambulist.aasweb.model.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

@@ -3,9 +3,9 @@ package me.noctambulist.aasweb.service;
 import me.noctambulist.aasweb.common.exception.CustomException;
 import me.noctambulist.aasweb.common.result.ResultEnum;
 import me.noctambulist.aasweb.controller.TutorManagementController.GetTutorInfoListParam;
-import me.noctambulist.aasweb.entity.TutorInfo;
-import me.noctambulist.aasweb.entity.dto.TutorInfoDTO;
 import me.noctambulist.aasweb.repository.ITutorInfo;
+import me.noctambulist.aasweb.model.TutorInfo;
+import me.noctambulist.aasweb.model.dto.TutorInfoDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -48,10 +48,6 @@ public class TutorInfoService {
 
     public void deleteByUniqueId(Long id) {
         iTutorInfo.deleteByUniqueId(id);
-    }
-
-    public TutorInfo findByUniqueId(Long uniqueId) {
-        return iTutorInfo.findByUniqueId(uniqueId).orElse(null);
     }
 
     public List<TutorInfoDTO> getTutorInfoWithFilter(GetTutorInfoListParam param) {

@@ -1,4 +1,4 @@
-package me.noctambulist.aasweb.entity;
+package me.noctambulist.aasweb.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -6,7 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import me.noctambulist.aasweb.entity.dto.TutorInfoDTO;
+import me.noctambulist.aasweb.model.dto.TutorInfoDTO;
 import org.hibernate.annotations.DynamicInsert;
 import org.springframework.beans.BeanUtils;
 

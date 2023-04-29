@@ -2,8 +2,8 @@ package me.noctambulist.aasweb.service;
 
 import me.noctambulist.aasweb.common.exception.CustomException;
 import me.noctambulist.aasweb.common.result.ResultEnum;
-import me.noctambulist.aasweb.entity.Score;
 import me.noctambulist.aasweb.repository.IScore;
+import me.noctambulist.aasweb.model.Score;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

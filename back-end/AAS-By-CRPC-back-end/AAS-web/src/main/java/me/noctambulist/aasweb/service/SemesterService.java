@@ -1,8 +1,8 @@
 package me.noctambulist.aasweb.service;
 
 import me.noctambulist.aasweb.common.constant.RedisConstants;
-import me.noctambulist.aasweb.entity.Semester;
 import me.noctambulist.aasweb.repository.ISemester;
+import me.noctambulist.aasweb.model.Semester;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
