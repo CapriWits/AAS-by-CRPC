@@ -16,6 +16,7 @@
     <modules>
         <module>AAS-web</module>
         <module>AAS-model</module>
+        <module>AAS-common</module>
     </modules>
 
     <properties>
