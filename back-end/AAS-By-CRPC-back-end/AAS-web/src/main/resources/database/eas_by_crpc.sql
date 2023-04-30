@@ -11,7 +11,7 @@
  Target Server Version : 50735
  File Encoding         : 65001
 
- Date: 27/04/2023 11:24:04
+ Date: 30/04/2023 22:51:17
 */
 
 SET NAMES utf8mb4;
@@ -38,7 +38,7 @@ CREATE TABLE `account`  (
 -- ----------------------------
 DROP TABLE IF EXISTS `class_schedule`;
 CREATE TABLE `class_schedule`  (
-  `id` int(10) NOT NULL COMMENT '课程表 id',
+  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '课程表 id',
   `course_id` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '课程号',
   `course_num` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '课序号',
   `student_id` bigint(15) NULL DEFAULT NULL COMMENT '学生 id',
@@ -53,28 +53,14 @@ CREATE TABLE `class_schedule`  (
   INDEX `courseId_courseNum`(`course_id`, `course_num`) USING BTREE,
   INDEX `studentId_tutorId`(`student_id`, `tutor_id`) USING BTREE,
   INDEX `semesterId_scoreId`(`semester_id`, `score_id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '课程表' ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Table structure for coupon
--- ----------------------------
-DROP TABLE IF EXISTS `coupon`;
-CREATE TABLE `coupon`  (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '表主键',
-  `student_id` bigint(15) NOT NULL COMMENT '学生 id',
-  `coupon` double NULL DEFAULT 0 COMMENT '学生券',
-  `created_at` timestamp(0) NULL DEFAULT NULL COMMENT '创建时间',
-  `updated_at` timestamp(0) NULL DEFAULT NULL COMMENT '最后更新时间',
-  PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `uniqueId`(`student_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '学分券表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '课程表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for course_order
 -- ----------------------------
 DROP TABLE IF EXISTS `course_order`;
 CREATE TABLE `course_order`  (
-  `id` int(10) NOT NULL COMMENT '订单表 id',
+  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '订单表 id',
   `student_id` bigint(15) NOT NULL COMMENT '学生 id',
   `total_credit` double NULL DEFAULT NULL COMMENT '总学分',
   `classes` json NULL COMMENT '课程信息。如：[{\"course_id\":\"\",\"course_num\":\"\",\"credit\":1,\"name\":\"\"}]',
@@ -126,6 +112,7 @@ DROP TABLE IF EXISTS `student_info`;
 CREATE TABLE `student_info`  (
   `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '表主键',
   `unique_id` bigint(15) NOT NULL COMMENT '学生 id',
+  `coupon` double NULL DEFAULT NULL COMMENT '学分券',
   `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '姓名',
   `id_card_num` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '身份证号',
   `phone` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '电话',

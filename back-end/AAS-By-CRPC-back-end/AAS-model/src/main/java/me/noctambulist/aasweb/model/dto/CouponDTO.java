@@ -8,7 +8,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import me.noctambulist.aasweb.model.Coupon;
 
 import java.io.Serializable;
 import java.util.Objects;

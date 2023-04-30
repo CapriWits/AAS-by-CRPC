@@ -89,8 +89,8 @@ public class StudentManagementController {
     @PostMapping("/insert_student_info")
     @ResponseBody
     public R insertStudentInfo(@RequestBody @Validated final InsertStudentInfoParam param) {
-        StudentInfo studentInfo = StudentInfo.builder().uniqueId(param.getUniqueId()).name(param.getName())
-                .idCardNum(param.getIdCardNum()).phone(param.getPhone()).gender(param.getGender())
+        StudentInfo studentInfo = StudentInfo.builder().uniqueId(param.getUniqueId()).coupon(param.getCoupon())
+                .name(param.getName()).idCardNum(param.getIdCardNum()).phone(param.getPhone()).gender(param.getGender())
                 .nationality(param.getNationality()).birthday(param.getBirthday()).examFrom(param.getExamFrom())
                 .gaokaoScore(param.getGaokaoScore()).graduatedSchool(param.getGraduatedSchool())
                 .department(param.getDepartment()).major(param.getMajor()).campus(param.getCampus())
@@ -104,6 +104,7 @@ public class StudentManagementController {
     public static class InsertStudentInfoParam {
         @JsonProperty("unique_id")
         Long uniqueId;
+        Double coupon = 0d;
         String name;
         @JsonProperty("id_card_num")
         String idCardNum;
@@ -155,8 +156,8 @@ public class StudentManagementController {
     @PostMapping("/update_student_info")
     @ResponseBody
     public R updateAccount(@RequestBody @Validated final UpdateStudentInfoParam param) {
-        StudentInfo studentInfo = StudentInfo.builder().uniqueId(param.getUniqueId()).name(param.getName())
-                .idCardNum(param.getIdCardNum()).phone(param.getPhone()).gender(param.getGender())
+        StudentInfo studentInfo = StudentInfo.builder().uniqueId(param.getUniqueId()).coupon(param.getCoupon())
+                .name(param.getName()).idCardNum(param.getIdCardNum()).phone(param.getPhone()).gender(param.getGender())
                 .nationality(param.getNationality()).birthday(param.getBirthday()).examFrom(param.getExamFrom())
                 .gaokaoScore(param.getGaokaoScore()).graduatedSchool(param.getGraduatedSchool())
                 .department(param.getDepartment()).major(param.getMajor()).campus(param.getCampus())
@@ -170,6 +171,7 @@ public class StudentManagementController {
     public static class UpdateStudentInfoParam {
         @JsonProperty("unique_id")
         Long uniqueId;
+        Double coupon = 0d;
         String name;
         @JsonProperty("id_card_num")
         String idCardNum;

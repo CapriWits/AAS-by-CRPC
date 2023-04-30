@@ -47,6 +47,9 @@ public class StudentInfo extends BaseEntity implements Serializable {
     @Column(name = "unique_id", nullable = false)
     private Long uniqueId;
 
+    @Column(name = "coupon")
+    private Double coupon = 0d;
+
     @Column(name = "name")
     private String name;
 

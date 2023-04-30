@@ -33,6 +33,9 @@ public class StudentInfoDTO implements Serializable {
     @JsonProperty("unique_id")
     private Long uniqueId;
 
+    @JsonProperty("coupon")
+    private Double coupon = 0d;
+
     @JsonProperty("name")
     private String name;
 
