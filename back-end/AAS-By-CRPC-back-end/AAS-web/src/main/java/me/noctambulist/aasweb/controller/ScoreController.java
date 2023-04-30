@@ -44,7 +44,7 @@ public class ScoreController {
         if (score == null) {
             throw new CustomException(ResultEnum.NOT_FOUND);
         }
-        return R.success(JsonUtils.newObjectNode().set("score", JsonUtils.objectToJsonNode(score)));
+        return R.success(JsonUtils.newObjectNode().set("score_info", JsonUtils.objectToJsonNode(score)));
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
@@ -61,7 +61,7 @@ public class ScoreController {
     public R insertScore(@RequestBody @Validated final InsertScoreParam param) {
         Score score = Score.builder().score(param.score).build();
         Score res = scoreService.create(score);
-        return R.success(JsonUtils.newObjectNode().set("score", JsonUtils.objectToJsonNode(res)));
+        return R.success(JsonUtils.newObjectNode().set("score_info", JsonUtils.objectToJsonNode(res)));
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
@@ -77,7 +77,7 @@ public class ScoreController {
     public R updateScore(@RequestBody @Validated final UpdateScoreParam param) {
         Score score = Score.builder().id(param.id).score(param.score).build();
         Score updatedScore = scoreService.update(param.id, score);
-        return R.success(JsonUtils.newObjectNode().set("score", JsonUtils.objectToJsonNode(updatedScore)));
+        return R.success(JsonUtils.newObjectNode().set("score_info", JsonUtils.objectToJsonNode(updatedScore)));
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)

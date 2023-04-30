@@ -30,7 +30,7 @@ spring:
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
   data:
     mongodb:
-      uri: mongodb://admin:admin@192.168.248.128:27017/EAS_By_CRPC
+      uri: mongodb://admin:admin@192.168.248.128:27017/EAS_By_CRPC?authSource=admin&authMechanism=SCRAM-SHA-1
   redis:
     host: 192.168.248.128
     port: 6379

@@ -26,18 +26,14 @@ public class MongoScheduleService {
     }
 
     @Transactional
-    public void create(Schedule schedule) {
-        mongoTemplate.save(schedule);
+    public Schedule create(Schedule schedule) {
+        return mongoTemplate.insert(schedule);
     }
 
     @Transactional
     public void deleteById(String id) {
         Query query = new Query(Criteria.where("_id").is(new ObjectId(id)));
         mongoTemplate.remove(query, Schedule.class);
-    }
-
-    public Schedule findById(String id) {
-        return mongoTemplate.findById(id, Schedule.class);
     }
 
     public List<Schedule> findAll() {

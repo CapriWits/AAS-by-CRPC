@@ -1,13 +1,17 @@
 package me.noctambulist.aasweb.model.mongo;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import me.noctambulist.aasweb.model.dto.ScheduleDTO;
 import org.bson.types.ObjectId;
+import org.springframework.beans.BeanUtils;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
@@ -33,6 +37,7 @@ public class Schedule implements Serializable {
 
     @Id
     @JsonProperty("id")
+    @JsonSerialize(using = ToStringSerializer.class)  // Serialize using org.bson.types.ObjectId#toString
     private ObjectId id;
 
     @Field("course_id")
@@ -114,6 +119,12 @@ public class Schedule implements Serializable {
     public int hashCode() {
         return Objects.hash(id, courseId, courseName, courseNumber, credit, courseAttributes, examType, tutor,
                 department, weekly, week, sectionId, sectionNum, campus, building, classRoom);
+    }
+
+    public static ScheduleDTO entityToDTO(Schedule schedule) {
+        ScheduleDTO dto = new ScheduleDTO();
+        BeanUtils.copyProperties(schedule, dto);
+        return dto;
     }
 
 }
