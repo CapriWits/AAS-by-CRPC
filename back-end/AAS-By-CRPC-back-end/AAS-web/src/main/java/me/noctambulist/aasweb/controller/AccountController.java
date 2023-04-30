@@ -7,9 +7,10 @@ import me.noctambulist.aasweb.common.exception.CustomException;
 import me.noctambulist.aasweb.common.exception.GlobalExceptionHandler;
 import me.noctambulist.aasweb.common.result.R;
 import me.noctambulist.aasweb.common.result.ResultEnum;
+import me.noctambulist.aasweb.common.util.JsonUtils;
 import me.noctambulist.aasweb.common.util.MD5Utils;
-import me.noctambulist.aasweb.service.AccountService;
 import me.noctambulist.aasweb.model.Account;
+import me.noctambulist.aasweb.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.validation.annotation.Validated;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.constraints.NotNull;
 import java.security.NoSuchAlgorithmException;
+import java.util.List;
 
 /**
  * @Author: Hypocrite30
@@ -36,6 +38,13 @@ public class AccountController {
     @Autowired
     public AccountController(AccountService accountService) {
         this.accountService = accountService;
+    }
+
+    @PostMapping("/find_all_account")
+    @ResponseBody
+    public R findAllAccount() {
+        List<Account> accounts = accountService.findAll();
+        return R.success(JsonUtils.newObjectNode().set("account_info", JsonUtils.objectToJsonNode(accounts)));
     }
 
     // =========================================================================================
