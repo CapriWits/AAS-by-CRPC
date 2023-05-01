@@ -8,15 +8,16 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import me.noctambulist.aasweb.model.CourseOrder;
 
 import java.io.Serializable;
 import java.util.Objects;
 
 /**
- * Same as Coupon, except for an {@link Coupon#getId()}
+ * Same as {@link CourseOrder}, except for an {@link CourseOrder#getId()}
  *
  * @Author: Hypocrite30
- * @Date: 2023/4/27 15:41
+ * @Date: 2023/5/1 15:48
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Getter
@@ -25,27 +26,31 @@ import java.util.Objects;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class CouponDTO implements Serializable {
+public class CourseOrderDTO implements Serializable {
 
-    private static final long serialVersionUID = -3158035633407124559L;
+    private static final long serialVersionUID = 8974957899857086844L;
 
     @JsonProperty("student_id")
     private Long studentId;
 
-    @JsonProperty("coupon")
-    private Double coupon = 0d;
+    @JsonProperty("total_credit")
+    private Double totalCredit;
+
+    @JsonProperty("classes")
+    private String classesJson;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        CouponDTO couponDTO = (CouponDTO) o;
-        return Objects.equals(studentId, couponDTO.studentId) && Objects.equals(coupon, couponDTO.coupon);
+        CourseOrderDTO dto = (CourseOrderDTO) o;
+        return Objects.equals(studentId, dto.studentId) && Objects.equals(totalCredit, dto.totalCredit)
+                && Objects.equals(classesJson, dto.classesJson);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(studentId, coupon);
+        return Objects.hash(studentId, totalCredit, classesJson);
     }
 
 }

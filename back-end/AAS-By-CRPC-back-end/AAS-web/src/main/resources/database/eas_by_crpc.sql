@@ -11,7 +11,7 @@
  Target Server Version : 50735
  File Encoding         : 65001
 
- Date: 30/04/2023 22:51:17
+ Date: 01/05/2023 16:40:52
 */
 
 SET NAMES utf8mb4;
@@ -63,11 +63,11 @@ CREATE TABLE `course_order`  (
   `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '订单表 id',
   `student_id` bigint(15) NOT NULL COMMENT '学生 id',
   `total_credit` double NULL DEFAULT NULL COMMENT '总学分',
-  `classes` json NULL COMMENT '课程信息。如：[{\"course_id\":\"\",\"course_num\":\"\",\"credit\":1,\"name\":\"\"}]',
+  `classes` json NULL COMMENT '课程信息。如：[{\"course_id\":\"\",\"course_number\":\"\",\"credit\":0,\"course_name\":\"\"}]',
   `created_at` timestamp(0) NULL DEFAULT NULL COMMENT '创建时间',
   `updated_at` timestamp(0) NULL DEFAULT NULL COMMENT '最后更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '选课订单表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '选课订单表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for role
