@@ -8,4 +8,6 @@ public class RedisConstants {
 
     public static final String CURRENT_SEMESTER = "current_semester";
 
+    public static final String CLASS_SELECTION_CONTROLLER = "class_selection_controller";
+
 }
