@@ -154,4 +154,24 @@ public class MongoScheduleController {
         String department;
     }
 
+    // =========================================================================================
+
+    @PostMapping("/find_schedule_by_courseId_courseNum")
+    @ResponseBody
+    public R findScheduleFilterCourseIdNum(@RequestBody @Validated final FindScheduleFilterCourseIdNumParam param) {
+        List<Schedule> schedules = mongoScheduleService.findByCourseIdAndCourseNumber(param.courseId, param.courseNum);
+        return R.success(JsonUtils.newObjectNode().set("schedule_info", JsonUtils.objectToJsonNode(schedules)));
+    }
+
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    @Data
+    public static class FindScheduleFilterCourseIdNumParam {
+        @JsonProperty("course_id")
+        @NotNull(message = "课程号不能为空")
+        String courseId;
+        @JsonProperty("course_number")
+        @NotNull(message = "课序号不能为空")
+        String courseNum;
+    }
+
 }

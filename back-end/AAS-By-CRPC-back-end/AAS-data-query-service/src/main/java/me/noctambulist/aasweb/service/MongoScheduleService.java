@@ -46,4 +46,11 @@ public class MongoScheduleService {
         return mongoTemplate.find(query, Schedule.class);
     }
 
+    public List<Schedule> findByCourseIdAndCourseNumber(String courseId, String courseNumber) {
+        Query query = new Query();
+        query.addCriteria(Criteria.where("course_id").is(courseId)
+                .and("course_number").is(courseNumber));
+        return mongoTemplate.find(query, Schedule.class);
+    }
+
 }
