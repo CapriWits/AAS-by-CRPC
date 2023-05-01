@@ -4,9 +4,9 @@ import me.noctambulist.aasweb.common.exception.CustomException;
 import me.noctambulist.aasweb.common.result.ResultEnum;
 import me.noctambulist.aasweb.controller.StudentManagementController.GetStudentInfoListParam;
 import me.noctambulist.aasweb.controller.StudentManagementController.GetStudentInfoListParam.GetStudentInfoFilter;
-import me.noctambulist.aasweb.repository.IStudentInfo;
 import me.noctambulist.aasweb.model.StudentInfo;
 import me.noctambulist.aasweb.model.dto.StudentInfoDTO;
+import me.noctambulist.aasweb.repository.IStudentInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -69,4 +69,9 @@ public class StudentInfoService {
         }));
         return studentInfos.stream().map(StudentInfo::entityToDTO).collect(Collectors.toList());
     }
+
+    public StudentInfo getStudentInfoByUniqueId(Long uniqueId) {
+        return iStudentInfo.findByUniqueId(uniqueId).orElse(null);
+    }
+
 }

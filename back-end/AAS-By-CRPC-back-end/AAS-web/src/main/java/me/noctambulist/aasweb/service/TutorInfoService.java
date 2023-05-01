@@ -68,4 +68,9 @@ public class TutorInfoService {
         }));
         return tutorInfos.stream().map(TutorInfo::entity2DTO).collect(Collectors.toList());
     }
+
+    public TutorInfo getTutorInfoByUniqueId(Long uniqueId) {
+        return iTutorInfo.findByUniqueId(uniqueId).orElse(null);
+    }
+
 }
