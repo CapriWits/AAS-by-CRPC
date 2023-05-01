@@ -138,4 +138,20 @@ public class MongoScheduleController {
         String id;
     }
 
+    // =========================================================================================
+
+    @PostMapping("/find_schedule_by_department")
+    @ResponseBody
+    public R findScheduleFilterDepartment(@RequestBody @Validated final FindScheduleWithFilterParam param) {
+        List<Schedule> schedules = mongoScheduleService.findScheduleByDepartment(param.department);
+        return R.success(JsonUtils.newObjectNode().set("schedule_info", JsonUtils.objectToJsonNode(schedules)));
+    }
+
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    @Data
+    public static class FindScheduleWithFilterParam {
+        @NotNull(message = "学生院系不能为空")
+        String department;
+    }
+
 }

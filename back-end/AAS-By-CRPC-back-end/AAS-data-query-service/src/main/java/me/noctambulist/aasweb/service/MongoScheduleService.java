@@ -40,4 +40,10 @@ public class MongoScheduleService {
         return mongoTemplate.findAll(Schedule.class);
     }
 
+    public List<Schedule> findScheduleByDepartment(String department) {
+        Query query = new Query();
+        query.addCriteria(Criteria.where("department").regex(department));
+        return mongoTemplate.find(query, Schedule.class);
+    }
+
 }
