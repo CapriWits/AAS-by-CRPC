@@ -1,5 +1,6 @@
 package me.noctambulist.aasweb.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -48,18 +49,23 @@ public class ClassSchedule extends BaseEntity implements Serializable {
     private Integer id;
 
     @Column(name = "course_id")
+    @JsonProperty("course_id")
     private String courseId;
 
     @Column(name = "course_num")
+    @JsonProperty("course_num")
     private String courseNum;
 
     @Column(name = "student_id")
+    @JsonProperty("student_id")
     private Long studentId;
 
     @Column(name = "tutor_id")
+    @JsonProperty("tutor_id")
     private Long tutorId;
 
     @Column(name = "semester_id")
+    @JsonProperty("semester_id")
     private Integer semesterId;
 
     @OneToOne(fetch = FetchType.LAZY)
@@ -70,6 +76,7 @@ public class ClassSchedule extends BaseEntity implements Serializable {
     private String status = "选中";
 
     @Column(name = "class_info", columnDefinition = "json")
+    @JsonProperty("class_info")
     private String classInfo;
 
     @Override

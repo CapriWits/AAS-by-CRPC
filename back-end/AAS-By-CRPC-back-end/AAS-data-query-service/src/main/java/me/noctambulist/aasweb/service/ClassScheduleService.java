@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.criteria.Predicate;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -35,4 +37,21 @@ public class ClassScheduleService {
         return iClassSchedule.findAll();
     }
 
+    public List<ClassSchedule> findByStudentIdAndSemesterId(Long studentId, Integer semesterId) {
+        return iClassSchedule.findAll((root, query, criteriaBuilder) -> {
+            List<Predicate> predicates = new ArrayList<>();
+
+            Predicate studentIdPredicate = criteriaBuilder.equal(root.get("studentId"), studentId);
+            predicates.add(studentIdPredicate);
+
+            Predicate semesterIdPredicate = criteriaBuilder.equal(root.get("semesterId"), semesterId);
+            predicates.add(semesterIdPredicate);
+
+            Predicate statusPredicate = criteriaBuilder.equal(root.get("status"), "选中");
+            predicates.add(statusPredicate);
+
+            query.where(criteriaBuilder.and(predicates.toArray(new Predicate[0])));
+            return null;
+        });
+    }
 }
