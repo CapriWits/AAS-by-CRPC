@@ -24,6 +24,7 @@ import org.springframework.data.redis.core.ListOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.util.ObjectUtils;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -42,6 +43,7 @@ import static me.noctambulist.aasweb.common.constant.RedisConstants.CLASS_SELECT
  */
 @RestController
 @Slf4j
+@CrossOrigin
 public class LoginController {
 
     private final AccountService accountService;

@@ -11,6 +11,7 @@ import me.noctambulist.aasweb.model.dto.CourseOrderDTO;
 import me.noctambulist.aasweb.service.CourseOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,6 +29,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/order")
 @Slf4j
+@CrossOrigin
 public class CourseOrderController {
 
     private final CourseOrderService courseOrderService;

@@ -11,6 +11,7 @@ import me.noctambulist.aasweb.service.ScoreService;
 import me.noctambulist.aasweb.model.Score;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,6 +27,7 @@ import javax.validation.constraints.NotNull;
 @RestController
 @RequestMapping("/score")
 @Slf4j
+@CrossOrigin
 public class ScoreController {
 
     private final ScoreService scoreService;

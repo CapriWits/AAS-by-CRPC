@@ -10,6 +10,7 @@ import me.noctambulist.aasweb.model.mongo.Schedule;
 import me.noctambulist.aasweb.service.MongoScheduleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,6 +27,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/mongo/schedule")
 @Slf4j
+@CrossOrigin
 public class MongoScheduleController {
 
     private final MongoScheduleService mongoScheduleService;

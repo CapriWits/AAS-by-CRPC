@@ -10,6 +10,7 @@ import me.noctambulist.aasweb.model.ClassSchedule;
 import me.noctambulist.aasweb.service.ClassScheduleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,6 +28,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/class_schedule")
 @Slf4j
+@CrossOrigin
 public class ClassScheduleController {
 
     private final ClassScheduleService classScheduleService;
