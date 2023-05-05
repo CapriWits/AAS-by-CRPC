@@ -17,7 +17,6 @@ import org.springframework.data.mongodb.core.mapping.Field;
 
 import javax.persistence.Id;
 import java.io.Serializable;
-import java.util.List;
 import java.util.Objects;
 
 /**
@@ -70,7 +69,7 @@ public class Schedule implements Serializable {
 
     @Field("department")
     @JsonProperty("department")
-    private List<String> department;
+    private String department;
 
     @Field("weekly")
     @JsonProperty("weekly")

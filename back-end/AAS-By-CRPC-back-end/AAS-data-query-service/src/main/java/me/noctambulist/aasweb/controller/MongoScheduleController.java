@@ -93,7 +93,7 @@ public class MongoScheduleController {
 
         @JsonProperty("department")
         @NotNull(message = "可选该课院系不能为空")
-        List<String> department;
+        String department;
 
         @JsonProperty("weekly")
         @NotNull(message = "周次不能为空")
