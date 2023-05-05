@@ -7,6 +7,11 @@ import lombok.extern.slf4j.Slf4j;
 import me.noctambulist.aasweb.common.exception.GlobalExceptionHandler;
 import me.noctambulist.aasweb.common.result.R;
 import me.noctambulist.aasweb.common.result.ResultEnum;
+import me.noctambulist.aasweb.common.util.MD5Utils;
+import me.noctambulist.aasweb.model.Account;
+import me.noctambulist.aasweb.model.Role;
+import me.noctambulist.aasweb.service.AccountService;
+import me.noctambulist.aasweb.service.RoleService;
 import me.noctambulist.aasweb.service.StudentInfoService;
 import me.noctambulist.aasweb.model.StudentInfo;
 import me.noctambulist.aasweb.model.dto.StudentInfoDTO;
@@ -22,6 +27,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.constraints.NotNull;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 /**
@@ -35,10 +41,15 @@ import java.util.List;
 public class StudentManagementController {
 
     private final StudentInfoService studentInfoService;
+    private final AccountService accountService;
+    private final RoleService roleService;
 
     @Autowired
-    public StudentManagementController(StudentInfoService studentInfoService) {
+    public StudentManagementController(StudentInfoService studentInfoService, AccountService accountService,
+                                       RoleService roleService) {
         this.studentInfoService = studentInfoService;
+        this.accountService = accountService;
+        this.roleService = roleService;
     }
 
     // =========================================================================================
@@ -90,7 +101,7 @@ public class StudentManagementController {
      */
     @PostMapping("/insert_student_info")
     @ResponseBody
-    public R insertStudentInfo(@RequestBody @Validated final InsertStudentInfoParam param) {
+    public R insertStudentInfo(@RequestBody @Validated final InsertStudentInfoParam param) throws NoSuchAlgorithmException {
         StudentInfo studentInfo = StudentInfo.builder().uniqueId(param.getUniqueId()).coupon(param.getCoupon())
                 .name(param.getName()).idCardNum(param.getIdCardNum()).phone(param.getPhone()).gender(param.getGender())
                 .nationality(param.getNationality()).birthday(param.getBirthday()).examFrom(param.getExamFrom())
@@ -98,6 +109,11 @@ public class StudentManagementController {
                 .department(param.getDepartment()).major(param.getMajor()).campus(param.getCampus())
                 .clazz(param.getClazz()).trainningLevel(param.getTrainningLevel()).build();
         studentInfoService.create(studentInfo);
+        Account account = Account.builder().uniqueId(param.uniqueId).email(param.email)
+                .password(MD5Utils.encode(param.password)).build();
+        accountService.create(account);
+        Role role = Role.builder().uniqueId(param.uniqueId).role((byte) 0).build();
+        roleService.create(role);
         return R.success();
     }
 
@@ -127,6 +143,8 @@ public class StudentManagementController {
         String clazz;
         @JsonProperty("trainning_level")
         String trainningLevel = "本科";
+        String email;
+        String password;
     }
 
     // =========================================================================================
@@ -135,6 +153,8 @@ public class StudentManagementController {
     @ResponseBody
     public R deleteStudentInfo(@RequestBody @Validated final DeleteStudentInfoParam param) {
         studentInfoService.deleteByUniqueId(param.id);
+        roleService.deleteByUniqueId(param.id);
+        accountService.deleteByUniqueId(param.id);
         return R.success();
     }
 
@@ -157,7 +177,7 @@ public class StudentManagementController {
      */
     @PostMapping("/update_student_info")
     @ResponseBody
-    public R updateAccount(@RequestBody @Validated final UpdateStudentInfoParam param) {
+    public R updateAccount(@RequestBody @Validated final UpdateStudentInfoParam param) throws NoSuchAlgorithmException {
         StudentInfo studentInfo = StudentInfo.builder().uniqueId(param.getUniqueId()).coupon(param.getCoupon())
                 .name(param.getName()).idCardNum(param.getIdCardNum()).phone(param.getPhone()).gender(param.getGender())
                 .nationality(param.getNationality()).birthday(param.getBirthday()).examFrom(param.getExamFrom())
@@ -165,6 +185,9 @@ public class StudentManagementController {
                 .department(param.getDepartment()).major(param.getMajor()).campus(param.getCampus())
                 .clazz(param.getClazz()).trainningLevel(param.getTrainningLevel()).build();
         studentInfoService.update(param.uniqueId, studentInfo);
+        Account account = Account.builder().uniqueId(param.uniqueId).email(param.email)
+                .password(MD5Utils.encode(param.password)).build();
+        accountService.update(param.uniqueId, account);
         return R.success();
     }
 
@@ -194,6 +217,8 @@ public class StudentManagementController {
         String clazz;
         @JsonProperty("trainning_level")
         String trainningLevel = "本科";
+        String email;
+        String password;
     }
 
 }

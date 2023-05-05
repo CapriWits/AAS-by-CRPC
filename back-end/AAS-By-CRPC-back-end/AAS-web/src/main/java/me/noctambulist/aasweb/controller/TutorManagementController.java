@@ -7,6 +7,11 @@ import lombok.extern.slf4j.Slf4j;
 import me.noctambulist.aasweb.common.exception.GlobalExceptionHandler;
 import me.noctambulist.aasweb.common.result.R;
 import me.noctambulist.aasweb.common.result.ResultEnum;
+import me.noctambulist.aasweb.common.util.MD5Utils;
+import me.noctambulist.aasweb.model.Account;
+import me.noctambulist.aasweb.model.Role;
+import me.noctambulist.aasweb.service.AccountService;
+import me.noctambulist.aasweb.service.RoleService;
 import me.noctambulist.aasweb.service.TutorInfoService;
 import me.noctambulist.aasweb.model.TutorInfo;
 import me.noctambulist.aasweb.model.dto.TutorInfoDTO;
@@ -22,6 +27,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.constraints.NotNull;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 /**
@@ -35,10 +41,15 @@ import java.util.List;
 public class TutorManagementController {
 
     private final TutorInfoService tutorInfoService;
+    private final AccountService accountService;
+    private final RoleService roleService;
 
     @Autowired
-    public TutorManagementController(TutorInfoService tutorInfoService) {
+    public TutorManagementController(TutorInfoService tutorInfoService, AccountService accountService,
+                                     RoleService roleService) {
         this.tutorInfoService = tutorInfoService;
+        this.accountService = accountService;
+        this.roleService = roleService;
     }
 
 
@@ -91,11 +102,17 @@ public class TutorManagementController {
      */
     @PostMapping("/insert_tutor_info")
     @ResponseBody
-    public R insertTutorInfo(@RequestBody @Validated final StudentManagementController.InsertStudentInfoParam param) {
-        TutorInfo tutorInfo = TutorInfo.builder().uniqueId(param.uniqueId).name(param.name).phone(param.phone).gender(param.gender)
-                .nationality(param.nationality).birthday(param.birthday).department(param.department)
-                .campus(param.campus).build();
+    public R insertTutorInfo(@RequestBody @Validated final StudentManagementController.InsertStudentInfoParam param)
+            throws NoSuchAlgorithmException {
+        TutorInfo tutorInfo = TutorInfo.builder().uniqueId(param.uniqueId).name(param.name).phone(param.phone)
+                .gender(param.gender).nationality(param.nationality).birthday(param.birthday)
+                .department(param.department).campus(param.campus).build();
         tutorInfoService.create(tutorInfo);
+        Account account = Account.builder().uniqueId(param.uniqueId).email(param.email)
+                .password(MD5Utils.encode(param.password)).build();
+        accountService.create(account);
+        Role role = Role.builder().uniqueId(param.uniqueId).role((byte) 1).build();
+        roleService.create(role);
         return R.success();
     }
 
@@ -111,6 +128,8 @@ public class TutorManagementController {
         String birthday;
         String department;
         String campus;
+        String email;
+        String password;
     }
 
     // =========================================================================================
@@ -119,6 +138,8 @@ public class TutorManagementController {
     @ResponseBody
     public R deleteTutorInfo(@RequestBody @Validated final DeleteTutorInfoParam param) {
         tutorInfoService.deleteByUniqueId(param.id);
+        accountService.deleteByUniqueId(param.id);
+        roleService.deleteByUniqueId(param.id);
         return R.success();
     }
 
@@ -133,11 +154,14 @@ public class TutorManagementController {
 
     @PostMapping("/update_tutor_info")
     @ResponseBody
-    public R updateAccount(@RequestBody @Validated final UpdateTutorInfoParam param) {
+    public R updateAccount(@RequestBody @Validated final UpdateTutorInfoParam param) throws NoSuchAlgorithmException {
         TutorInfo tutorInfo = TutorInfo.builder().uniqueId(param.uniqueId).name(param.name).phone(param.phone)
                 .gender(param.gender).nationality(param.nationality).birthday(param.birthday)
                 .department(param.department).campus(param.campus).build();
         tutorInfoService.update(param.uniqueId, tutorInfo);
+        Account account = Account.builder().uniqueId(param.uniqueId).email(param.email)
+                .password(MD5Utils.encode(param.password)).build();
+        accountService.create(account);
         return R.success();
     }
 
@@ -153,5 +177,7 @@ public class TutorManagementController {
         String birthday;
         String department;
         String campus;
+        String email;
+        String password;
     }
 }
