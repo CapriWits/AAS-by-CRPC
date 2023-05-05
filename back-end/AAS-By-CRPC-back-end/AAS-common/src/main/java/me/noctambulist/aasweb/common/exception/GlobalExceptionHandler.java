@@ -24,7 +24,7 @@ public class GlobalExceptionHandler {
     @ResponseBody
     public R handleCustomException(CustomException ex) {
         log.error("Custom Exception msg: [{}], details: [{}]", ex.getMessage(), ex.getDetails(), ex);
-        return R.failure(ex.getCode(), ex.getMessage());
+        return R.failure(ex.getCode(), ex.getMessage(), ex.getDetails());
     }
 
     /**

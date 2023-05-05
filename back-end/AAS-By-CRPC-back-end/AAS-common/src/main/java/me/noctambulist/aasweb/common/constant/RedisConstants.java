@@ -10,4 +10,8 @@ public class RedisConstants {
 
     public static final String CLASS_SELECTION_CONTROLLER = "class_selection_controller";
 
+    public static final String SKU_PREFIX = "sku_%s_%s";
+
+    public static final String SKU_LOCK = "sku_lock_%s_%s";
+
 }

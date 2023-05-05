@@ -54,4 +54,9 @@ public class ClassScheduleService {
             return null;
         });
     }
+
+    public List<ClassSchedule> findByTutorId(Long tutorId) {
+        return iClassSchedule.findByTutorIdOrderByCourseIdAscCourseNumAsc(tutorId);
+    }
+
 }

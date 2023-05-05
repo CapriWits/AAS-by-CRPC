@@ -46,19 +46,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-validation</artifactId>
         </dependency>
-        <!-- Cloud -->
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-dependencies</artifactId>
-            <version>${cloud.version}</version>
-            <type>pom</type>
-        </dependency>
-        <dependency>
-            <groupId>com.alibaba.cloud</groupId>
-            <artifactId>spring-cloud-alibaba-dependencies</artifactId>
-            <version>${alibaba.version}</version>
-            <type>pom</type>
-        </dependency>
         <!-- Tools and Libraries -->
         <dependency>
             <groupId>org.projectlombok</groupId>

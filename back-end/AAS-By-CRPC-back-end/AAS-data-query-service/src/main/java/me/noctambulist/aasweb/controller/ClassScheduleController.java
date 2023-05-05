@@ -68,4 +68,21 @@ public class ClassScheduleController {
         Integer semesterId;
     }
 
+    // =========================================================================================
+
+    @PostMapping("/find_by_tutorId")
+    @ResponseBody
+    public R findByTutorId(@RequestBody @Validated final FindByTutorIdParam param) {
+        List<ClassSchedule> classSchedules = classScheduleService.findByTutorId(param.tutorId);
+        return R.success(JsonUtils.newObjectNode().set("class_schedules", JsonUtils.objectToJsonNode(classSchedules)));
+    }
+
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    @Data
+    public static class FindByTutorIdParam {
+        @NotNull(message = "教师 id 不能为空")
+        @JsonProperty("tutor_id")
+        Long tutorId;
+    }
+
 }
