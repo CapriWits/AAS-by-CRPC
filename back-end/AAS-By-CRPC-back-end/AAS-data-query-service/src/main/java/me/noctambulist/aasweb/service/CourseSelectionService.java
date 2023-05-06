@@ -179,7 +179,7 @@ public class CourseSelectionService {
         try {
             boolean isLocked = false;
             try {
-                isLocked = lock.tryLock(20, 20, TimeUnit.MINUTES);
+                isLocked = lock.tryLock(5, 5, TimeUnit.SECONDS);
             } catch (InterruptedException e) {
                 log.error("Redisson trylock failed", e);
             }

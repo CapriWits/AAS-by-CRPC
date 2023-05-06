@@ -1,6 +1,7 @@
 package me.noctambulist.aasweb.controller;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
@@ -23,6 +24,7 @@ import java.io.IOException;
 import java.util.List;
 
 import static me.noctambulist.aasweb.common.constant.RedisConstants.CLASS_SELECTION_CONTROLLER;
+import static me.noctambulist.aasweb.common.constant.RedisConstants.SKU_PREFIX;
 
 /**
  * @Author: Hypocrite30
@@ -73,5 +75,25 @@ public class CourseSelectionController {
         List<String> departments = listOperations.range(CLASS_SELECTION_CONTROLLER, 0, len - 1);
         return R.success(JsonUtils.newObjectNode().
                 set("departments", JsonUtils.fromJson(JsonUtils.toJson(departments), ArrayNode.class)));
+    }
+
+    @PostMapping("/set_course_sku")
+    @ResponseBody
+    public R setCourseSku(@RequestBody @Validated final SetCourseSkuParam param) {
+        redisTemplate.opsForValue().set(String.format(SKU_PREFIX, param.courseId, param.courseNum), param.sku);
+        return R.success();
+    }
+
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    @Data
+    public static class SetCourseSkuParam {
+        @NotNull(message = "课程号不能为空")
+        @JsonProperty("course_id")
+        String courseId;
+        @NotNull(message = "课序号不能为空")
+        @JsonProperty("course_num")
+        String courseNum;
+        @NotNull(message = "课余量不能为空")
+        String sku;
     }
 }
