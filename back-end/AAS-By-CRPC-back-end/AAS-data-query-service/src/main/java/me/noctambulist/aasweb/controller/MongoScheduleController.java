@@ -6,7 +6,9 @@ import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import me.noctambulist.aasweb.common.result.R;
 import me.noctambulist.aasweb.common.util.JsonUtils;
+import me.noctambulist.aasweb.model.ClassSchedule;
 import me.noctambulist.aasweb.model.mongo.Schedule;
+import me.noctambulist.aasweb.service.ClassScheduleService;
 import me.noctambulist.aasweb.service.MongoScheduleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.constraints.NotNull;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @Author: Hypocrite30
@@ -31,10 +34,13 @@ import java.util.List;
 public class MongoScheduleController {
 
     private final MongoScheduleService mongoScheduleService;
+    private final ClassScheduleService classScheduleService;
 
     @Autowired
-    public MongoScheduleController(MongoScheduleService mongoScheduleService) {
+    public MongoScheduleController(MongoScheduleService mongoScheduleService,
+                                   ClassScheduleService classScheduleService) {
         this.mongoScheduleService = mongoScheduleService;
+        this.classScheduleService = classScheduleService;
     }
 
     // =========================================================================================
@@ -146,7 +152,19 @@ public class MongoScheduleController {
     @ResponseBody
     public R findScheduleFilterDepartment(@RequestBody @Validated final FindScheduleWithFilterParam param) {
         List<Schedule> schedules = mongoScheduleService.findScheduleByDepartment(param.department);
-        return R.success(JsonUtils.newObjectNode().set("schedule_info", JsonUtils.objectToJsonNode(schedules)));
+        // Student has selected courses
+        List<ClassSchedule> classSchedules =
+                classScheduleService.findByStudentIdAndSemesterId(param.studentId, param.semesterId);
+        List<Schedule> res = schedules.stream().filter(schedule -> {
+            for (ClassSchedule classSchedule : classSchedules) {
+                if (schedule.getCourseId().equals(classSchedule.getCourseId()) ||
+                        schedule.getCourseNumber().equals(classSchedule.getCourseNum())) {
+                    return false;
+                }
+            }
+            return true;
+        }).collect(Collectors.toList());
+        return R.success(JsonUtils.newObjectNode().set("schedule_info", JsonUtils.objectToJsonNode(res)));
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
@@ -154,6 +172,8 @@ public class MongoScheduleController {
     public static class FindScheduleWithFilterParam {
         @NotNull(message = "学生院系不能为空")
         String department;
+        Long studentId;
+        Integer semesterId;
     }
 
     // =========================================================================================
