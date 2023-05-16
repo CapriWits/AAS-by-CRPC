@@ -2,11 +2,14 @@ package me.noctambulist.aasweb.controller;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import me.noctambulist.aasweb.common.result.R;
 import me.noctambulist.aasweb.common.util.JsonUtils;
 import me.noctambulist.aasweb.model.ClassSchedule;
+import me.noctambulist.aasweb.model.vo.ClassScheduleVO;
 import me.noctambulist.aasweb.service.ClassScheduleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -18,7 +21,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.constraints.NotNull;
+import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Author: Hypocrite30
@@ -51,10 +56,24 @@ public class ClassScheduleController {
 
     @PostMapping("/find_by_studentId_semesterId")
     @ResponseBody
-    public R findByStudentIdAndSemesterId(@RequestBody @Validated final FindByStudentIdAndSemesterIdParam param) {
+    public R findByStudentIdAndSemesterId(@RequestBody @Validated final FindByStudentIdAndSemesterIdParam param)
+            throws IOException {
         List<ClassSchedule> classSchedules =
                 classScheduleService.findByStudentIdAndSemesterId(param.studentId, param.semesterId);
-        return R.success(JsonUtils.newObjectNode().set("class_schedules", JsonUtils.objectToJsonNode(classSchedules)));
+        ArrayNode response = JsonUtils.newArrayNode();
+        for (ClassSchedule schedule : classSchedules) {
+            ObjectNode node = JsonUtils.newObjectNode();
+            node.set("class_schedules", JsonUtils.objectToJsonNode(schedule));
+            Map<String, Object> classInfoMap = JsonUtils.fromJsonToMap(schedule.getClassInfo());
+            String[] sectionIds = ((String) classInfoMap.get("section_id")).split(";");
+            String[] sectionNums = ((String) classInfoMap.get("section_num")).split(";");
+            String[] weeks = ((String) classInfoMap.get("week")).split(";");
+            String courseName = (String) classInfoMap.get("course_name");
+            ClassScheduleVO[] classScheduleVOS = ClassScheduleVO.getInstance(sectionIds, sectionNums, weeks, courseName);
+            node.set("schedule_tables", JsonUtils.objectToJsonNode(classScheduleVOS));
+            response.add(node);
+        }
+        return R.success(response);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
