@@ -167,7 +167,7 @@ public class CourseSelectionService {
     @Transactional
     public R dropCourse(Long studentId, Integer semesterId, String courseId, String courseNum, Double credit) {
         // 1. Update ClassSchedule [status] field to "已退课"
-        if (iClassSchedule.dropCourse(studentId, semesterId, courseId, courseNum) != 1) {
+        if (iClassSchedule.dropCourse(studentId, semesterId, courseId, courseNum) <= 0) {
             throw new CustomException(-1, "退课失败", JsonUtils.newObjectNode()
                     .put("student_id", studentId).put("course_id", courseId)
                     .put("course_number", courseNum).put("semester_id", semesterId));
@@ -196,7 +196,7 @@ public class CourseSelectionService {
         }
         transaction.commit();
         // 3. Refund of credit coupon
-        if (iStudentInfo.addCoupon(credit, studentId) != 1) {
+        if (iStudentInfo.addCoupon(credit, studentId) <= 0) {
             throw new CustomException(-1, "返还学分券错误");
         }
 
