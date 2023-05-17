@@ -22,8 +22,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.constraints.NotNull;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Queue;
 
 /**
  * @Author: Hypocrite30
@@ -60,19 +64,25 @@ public class ClassScheduleController {
             throws IOException {
         List<ClassSchedule> classSchedules =
                 classScheduleService.findByStudentIdAndSemesterId(param.studentId, param.semesterId);
-        ArrayNode response = JsonUtils.newArrayNode();
+        ObjectNode response = JsonUtils.newObjectNode();
+        ArrayNode classSchduleNode = JsonUtils.newArrayNode();
+        List<String> sectionIdList = new ArrayList<>(), sectionNumList = new ArrayList<>(), weekList = new ArrayList<>();
+        Queue<String> nameQueue = new LinkedList<>();
         for (ClassSchedule schedule : classSchedules) {
-            ObjectNode node = JsonUtils.newObjectNode();
-            node.set("class_schedules", JsonUtils.objectToJsonNode(schedule));
             Map<String, Object> classInfoMap = JsonUtils.fromJsonToMap(schedule.getClassInfo());
             String[] sectionIds = ((String) classInfoMap.get("section_id")).split(";");
             String[] sectionNums = ((String) classInfoMap.get("section_num")).split(";");
             String[] weeks = ((String) classInfoMap.get("week")).split(";");
             String courseName = (String) classInfoMap.get("course_name");
-            ClassScheduleVO[] classScheduleVOS = ClassScheduleVO.getInstance(sectionIds, sectionNums, weeks, courseName);
-            node.set("schedule_tables", JsonUtils.objectToJsonNode(classScheduleVOS));
-            response.add(node);
+            sectionIdList.addAll(Arrays.asList(sectionIds));
+            sectionNumList.addAll(Arrays.asList(sectionNums));
+            weekList.addAll(Arrays.asList(weeks));
+            nameQueue.offer(courseName);
+            classSchduleNode.add(JsonUtils.objectToJsonNode(schedule));
         }
+        ClassScheduleVO[] classScheduleVOS = ClassScheduleVO.getInstance(sectionIdList, sectionNumList, weekList, nameQueue);
+        response.set("class_schedules", classSchduleNode);
+        response.set("schedule_tables", JsonUtils.objectToJsonNode(classScheduleVOS));
         return R.success(response);
     }
 

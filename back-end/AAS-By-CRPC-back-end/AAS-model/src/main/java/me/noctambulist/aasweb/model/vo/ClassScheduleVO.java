@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Queue;
 
 /**
  * @Author: Hypocrite30
@@ -69,14 +70,14 @@ public class ClassScheduleVO {
     /**
      * To generate class schedule for student
      *
-     * @param sectionIds  sectionId array
-     * @param sectionNums sectionNum array
-     * @param weeks       week array
-     * @param courseName  course name
-     * @return ClassScheduleVo array, which size equals 12
+     * @param sectionIds sectionId list
+     * @param sectionNums sectionNum list
+     * @param weeks week list
+     * @param nameQueue course name list
+     * @return ClassScheduleVO array, which size equals to 12
      */
-    public static ClassScheduleVO[] getInstance(String[] sectionIds, String[] sectionNums, String[] weeks, String courseName) {
-        int x = sectionIds.length, y = sectionNums.length, z = weeks.length;
+    public static ClassScheduleVO[] getInstance(List<String> sectionIds, List<String> sectionNums, List<String> weeks, Queue<String> nameQueue) {
+        int x = sectionIds.size(), y = sectionNums.size(), z = weeks.size();
         if (x != y || y != z) {
             log.error("sectionIds:[{}] or sectionNums:[{}] or weeks:[{}] length is not equals", x, y, z);
             throw new RuntimeException();
@@ -85,23 +86,26 @@ public class ClassScheduleVO {
         for (int i = 1; i <= 12; i++) {
             res.add(ClassScheduleVO.builder().key(String.valueOf(i)).time(timesMap.get(String.valueOf(i))).build());
         }
-        for (int i = 0; i < x; i++) {
-            String sectionNum = sectionNums[i], week = weeks[i], methodName = "set" + weeksMap.get(week);
-            Integer sectionId = Integer.valueOf(sectionIds[i]);
-            int n = Integer.parseInt(sectionNum);
-            for (int t = 0; t < n; t++) {
-                final int sectionKey = sectionId + t;
-                if (sectionKey < 0 || sectionKey > 12) {
-                    break;
-                }
-                res.stream().filter(v -> v.getKey().equals(String.valueOf(sectionKey))).forEach(v -> {
-                    try {
-                        Method method = v.getClass().getDeclaredMethod(methodName, String.class);
-                        method.invoke(v, courseName);
-                    } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-                        throw new RuntimeException(e);
+        while (!nameQueue.isEmpty()) {
+            String courseName = nameQueue.poll();
+            for (int i = 0; i < x; i++) {
+                String sectionNum = sectionNums.get(i), week = weeks.get(i), methodName = "set" + weeksMap.get(week);
+                int sectionId = Integer.parseInt(sectionIds.get(i));
+                int n = Integer.parseInt(sectionNum);
+                for (int t = 0; t < n; t++) {
+                    final int sectionKey = sectionId + t;
+                    if (sectionKey < 0 || sectionKey > 12) {
+                        break;
                     }
-                });
+                    res.stream().filter(v -> v.getKey().equals(String.valueOf(sectionKey))).forEach(v -> {
+                        try {
+                            Method method = v.getClass().getDeclaredMethod(methodName, String.class);
+                            method.invoke(v, courseName);
+                        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+                            throw new RuntimeException(e);
+                        }
+                    });
+                }
             }
         }
         return res.toArray(new ClassScheduleVO[0]);
