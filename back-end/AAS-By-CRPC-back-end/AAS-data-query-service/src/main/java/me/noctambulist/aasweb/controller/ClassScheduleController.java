@@ -101,9 +101,9 @@ public class ClassScheduleController {
 
     @PostMapping("/find_by_tutorId")
     @ResponseBody
-    public R findByTutorId(@RequestBody @Validated final FindByTutorIdParam param) {
-        List<ClassSchedule> classSchedules = classScheduleService.findByTutorId(param.tutorId);
-        return R.success(JsonUtils.newObjectNode().set("class_schedules", JsonUtils.objectToJsonNode(classSchedules)));
+    public R findByTutorId(@RequestBody @Validated final FindByTutorIdParam param) throws IOException {
+        ArrayNode classSchedules = classScheduleService.findByTutorId(param.tutorId);
+        return R.success(JsonUtils.newObjectNode().set("class_schedules", classSchedules));
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)

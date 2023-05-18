@@ -1,5 +1,8 @@
 package me.noctambulist.aasweb.service;
 
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import me.noctambulist.aasweb.common.util.JsonUtils;
 import me.noctambulist.aasweb.model.ClassSchedule;
 import me.noctambulist.aasweb.repository.IClassSchedule;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,8 +10,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.criteria.Predicate;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @Author: Hypocrite30
@@ -55,8 +60,23 @@ public class ClassScheduleService {
         });
     }
 
-    public List<ClassSchedule> findByTutorId(Long tutorId) {
-        return iClassSchedule.findByTutorIdOrderByCourseIdAscCourseNumAsc(tutorId);
+    public ArrayNode findByTutorId(Long tutorId) throws IOException {
+        ArrayNode arrayNode = JsonUtils.newArrayNode();
+        List<Object[]> courseIdsAndNums = iClassSchedule.findDistinctCourseIdAndCourseNumByTutorId(tutorId);
+        for (Object[] courseIdAndNum : courseIdsAndNums) {
+            ObjectNode node = JsonUtils.newObjectNode();
+            String courseId = (String) courseIdAndNum[0];
+            String courseNum = (String) courseIdAndNum[1];
+            Optional<ClassSchedule> optional = iClassSchedule.findFirstByCourseIdAndCourseNum(courseId, courseNum);
+            if (optional.isPresent()) {
+                String courseName = (String) JsonUtils.fromJsonToMap(optional.get().getClassInfo()).get("course_name");
+                node.put("courseId", courseId);
+                node.put("courseNum", courseNum);
+                node.put("courseName", courseName);
+                arrayNode.add(node);
+            }
+        }
+        return arrayNode;
     }
 
 }
