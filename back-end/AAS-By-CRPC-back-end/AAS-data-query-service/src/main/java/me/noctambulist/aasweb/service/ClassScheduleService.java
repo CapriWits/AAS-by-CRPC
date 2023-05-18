@@ -4,7 +4,9 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import me.noctambulist.aasweb.common.util.JsonUtils;
 import me.noctambulist.aasweb.model.ClassSchedule;
+import me.noctambulist.aasweb.model.StudentInfo;
 import me.noctambulist.aasweb.repository.IClassSchedule;
+import me.noctambulist.aasweb.repository.IStudentInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,10 +25,12 @@ import java.util.Optional;
 public class ClassScheduleService {
 
     private final IClassSchedule iClassSchedule;
+    private final IStudentInfo iStudentInfo;
 
     @Autowired
-    public ClassScheduleService(IClassSchedule iClassSchedule) {
+    public ClassScheduleService(IClassSchedule iClassSchedule, IStudentInfo iStudentInfo) {
         this.iClassSchedule = iClassSchedule;
+        this.iStudentInfo = iStudentInfo;
     }
 
     @Transactional
@@ -79,4 +83,38 @@ public class ClassScheduleService {
         return arrayNode;
     }
 
+    public ObjectNode findClassmate(String courseId, String courseNum, Long tutorId) {
+        List<ClassSchedule> classSchedules = iClassSchedule.findAll((root, query, criteriaBuilder) -> {
+            List<Predicate> predicates = new ArrayList<>();
+
+            Predicate courseIdPredicate = criteriaBuilder.equal(root.get("courseId"), courseId);
+            predicates.add(courseIdPredicate);
+
+            Predicate courseNumPredicate = criteriaBuilder.equal(root.get("courseNum"), courseNum);
+            predicates.add(courseNumPredicate);
+
+            Predicate tutorIdPredicate = criteriaBuilder.equal(root.get("tutorId"), tutorId);
+            predicates.add(tutorIdPredicate);
+
+            Predicate statusPredicate = criteriaBuilder.equal(root.get("status"), "选中");
+            predicates.add(statusPredicate);
+
+            query.where(criteriaBuilder.and(predicates.toArray(new Predicate[0])));
+            return null;
+        });
+        ArrayNode arrayNode = JsonUtils.newArrayNode();
+        for (ClassSchedule classSchedule : classSchedules) {
+            ObjectNode tmp = JsonUtils.newObjectNode();
+            Optional<StudentInfo> optionalStudentInfo = iStudentInfo.findByUniqueId(classSchedule.getStudentId());
+            optionalStudentInfo.ifPresent(studentInfo -> {
+                tmp.put("studentId", classSchedule.getStudentId());
+                tmp.put("studentName", studentInfo.getName());
+            });
+            arrayNode.add(tmp);
+        }
+        ObjectNode node = JsonUtils.newObjectNode();
+        node.set("classmates", JsonUtils.objectToJsonNode(classSchedules));
+        node.set("studentIdNameMap", arrayNode);
+        return node;
+    }
 }

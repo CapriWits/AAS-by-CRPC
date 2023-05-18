@@ -114,4 +114,26 @@ public class ClassScheduleController {
         Long tutorId;
     }
 
+    // =========================================================================================
+
+    @PostMapping("/find_classmate")
+    @ResponseBody
+    public R findClassmate(@RequestBody @Validated final FindClassmateParam param) {
+        return R.success(classScheduleService.findClassmate(param.courseId, param.courseNum, param.tutorId));
+    }
+
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    @Data
+    public static class FindClassmateParam {
+        @NotNull(message = "课程号不能为空")
+        @JsonProperty("course_id")
+        String courseId;
+        @NotNull(message = "课序号不能为空")
+        @JsonProperty("course_num")
+        String courseNum;
+        @NotNull(message = "教师 id 不能为空")
+        @JsonProperty("tutor_id")
+        Long tutorId;
+    }
+
 }
