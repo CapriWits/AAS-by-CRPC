@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.util.ObjectUtils;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -70,17 +71,18 @@ public class ClassScheduleVO {
     /**
      * To generate class schedule for student
      *
-     * @param sectionIds sectionId list
-     * @param sectionNums sectionNum list
-     * @param weeks week list
-     * @param nameQueue course name list
+     * @param sectionIdList sectionId list
+     * @param sectionNums   sectionNum list
+     * @param weeks         week list
+     * @param nameQueue     course name list
      * @return ClassScheduleVO array, which size equals to 12
      */
-    public static ClassScheduleVO[] getInstance(List<String> sectionIds, List<String> sectionNums, List<String> weeks, Queue<String> nameQueue) {
-        int x = sectionIds.size(), y = sectionNums.size(), z = weeks.size();
+    public static ClassScheduleVO[] getInstance(Queue<String[]> sectionIdQueue, Queue<String[]> sectionNumQueue,
+                                                Queue<String[]> weekQueue, Queue<String> nameQueue) {
+        int x = sectionIdQueue.size(), y = sectionNumQueue.size(), z = weekQueue.size();
         if (x != y || y != z) {
-            log.error("sectionIds:[{}] or sectionNums:[{}] or weeks:[{}] length is not equals", x, y, z);
-            throw new RuntimeException();
+            log.error("sectionIdQueue:[{}] or sectionNumQueue:[{}] or weekQueue:[{}] size is not equals", x, y, z);
+            throw new RuntimeException("sectionIdQueue, sectionNumQueue, weekQueue size is not equals");
         }
         List<ClassScheduleVO> res = new ArrayList<>(12);
         for (int i = 1; i <= 12; i++) {
@@ -88,10 +90,20 @@ public class ClassScheduleVO {
         }
         while (!nameQueue.isEmpty()) {
             String courseName = nameQueue.poll();
+            String[] sectionIds = sectionIdQueue.poll(), sectionNums = sectionNumQueue.poll(), weeks = weekQueue.poll();
+            if (ObjectUtils.isEmpty(sectionIds) || ObjectUtils.isEmpty(sectionNums) || ObjectUtils.isEmpty(weeks)) {
+                throw new RuntimeException("sectionId or sectionNum or weeks is null");
+            }
+            x = sectionIds.length;
+            y = sectionNums.length;
+            z = weeks.length;
+            if (x != y || y != z) {
+                log.error("sectionIds:[{}] or sectionNums:[{}] or weeks:[{}] length is not equals", x, y, z);
+                throw new RuntimeException("sectionIds, sectionNums, weeks length is not equals");
+            }
             for (int i = 0; i < x; i++) {
-                String sectionNum = sectionNums.get(i), week = weeks.get(i), methodName = "set" + weeksMap.get(week);
-                int sectionId = Integer.parseInt(sectionIds.get(i));
-                int n = Integer.parseInt(sectionNum);
+                String sectionNum = sectionNums[i], week = weeks[i], methodName = "set" + weeksMap.get(week);
+                int sectionId = Integer.parseInt(sectionIds[i]), n = Integer.parseInt(sectionNum);
                 for (int t = 0; t < n; t++) {
                     final int sectionKey = sectionId + t;
                     if (sectionKey < 0 || sectionKey > 12) {

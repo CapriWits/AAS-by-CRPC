@@ -13,17 +13,10 @@ import me.noctambulist.aasweb.model.vo.ClassScheduleVO;
 import me.noctambulist.aasweb.service.ClassScheduleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.NotNull;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -66,7 +59,7 @@ public class ClassScheduleController {
                 classScheduleService.findByStudentIdAndSemesterId(param.studentId, param.semesterId);
         ObjectNode response = JsonUtils.newObjectNode();
         ArrayNode classSchduleNode = JsonUtils.newArrayNode();
-        List<String> sectionIdList = new ArrayList<>(), sectionNumList = new ArrayList<>(), weekList = new ArrayList<>();
+        Queue<String[]> sectionIdList = new LinkedList<>(), sectionNumList = new LinkedList<>(), weekList = new LinkedList<>();
         Queue<String> nameQueue = new LinkedList<>();
         for (ClassSchedule schedule : classSchedules) {
             Map<String, Object> classInfoMap = JsonUtils.fromJsonToMap(schedule.getClassInfo());
@@ -74,9 +67,9 @@ public class ClassScheduleController {
             String[] sectionNums = ((String) classInfoMap.get("section_num")).split(";");
             String[] weeks = ((String) classInfoMap.get("week")).split(";");
             String courseName = (String) classInfoMap.get("course_name");
-            sectionIdList.addAll(Arrays.asList(sectionIds));
-            sectionNumList.addAll(Arrays.asList(sectionNums));
-            weekList.addAll(Arrays.asList(weeks));
+            sectionIdList.offer(sectionIds);
+            sectionNumList.offer(sectionNums);
+            weekList.offer(weeks);
             nameQueue.offer(courseName);
             classSchduleNode.add(JsonUtils.objectToJsonNode(schedule));
         }
