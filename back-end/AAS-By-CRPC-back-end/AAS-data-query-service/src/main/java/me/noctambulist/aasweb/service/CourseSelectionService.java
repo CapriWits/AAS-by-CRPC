@@ -121,12 +121,20 @@ public class CourseSelectionService {
         iCourseOrder.saveAndFlush(courseOrder);
         // 3. Generate class schedule
         for (Schedule schedule : schedules) {
-            Score score = iScore.saveAndFlush(Score.builder().score(0d).build());
-            ClassSchedule classSchedule = ClassSchedule.builder().courseId(schedule.getCourseId())
-                    .courseNum(schedule.getCourseNumber()).studentId(studentId)
-                    .tutorId(tutorNameId.get(schedule.getTutor())).semesterId(semesterId)
-                    .classInfo(JsonUtils.toJson(schedule)).score(score).build();
-            iClassSchedule.saveAndFlush(classSchedule);
+            ClassSchedule classSchedule = iClassSchedule.findByCourseIdAndCourseNumAndStudentIdAndSemesterId(
+                    schedule.getCourseId(), schedule.getCourseNumber(), studentId, semesterId);
+            // The student has previously taken the course and dropped it
+            if (classSchedule != null) {
+                classSchedule.setStatus("选中");
+                iClassSchedule.saveAndFlush(classSchedule);
+            } else {
+                Score score = iScore.saveAndFlush(Score.builder().score(0d).build());
+                classSchedule = ClassSchedule.builder().courseId(schedule.getCourseId())
+                        .courseNum(schedule.getCourseNumber()).studentId(studentId)
+                        .tutorId(tutorNameId.get(schedule.getTutor())).semesterId(semesterId)
+                        .classInfo(JsonUtils.toJson(schedule)).score(score).build();
+                iClassSchedule.saveAndFlush(classSchedule);
+            }
         }
         // 4. Deduct [sku_courseId_courseNum] in redis
         RTransaction transaction = redissonClient.createTransaction(TransactionOptions.defaults());

@@ -26,4 +26,6 @@ public interface IClassSchedule extends JpaRepository<ClassSchedule, Integer>, J
 
     Optional<ClassSchedule> findFirstByCourseIdAndCourseNum(String courseId, String courseNum);
 
+    ClassSchedule findByCourseIdAndCourseNumAndStudentIdAndSemesterId(String courseId, String courseNum, Long studentId, Integer semesterId);
+
 }
