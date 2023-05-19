@@ -161,7 +161,7 @@ public class TutorManagementController {
         tutorInfoService.update(param.uniqueId, tutorInfo);
         Account account = Account.builder().uniqueId(param.uniqueId).email(param.email)
                 .password(MD5Utils.encode(param.password)).build();
-        accountService.create(account);
+        accountService.update(param.uniqueId, account);
         return R.success();
     }
 
