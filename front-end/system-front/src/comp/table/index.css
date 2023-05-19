@@ -1,0 +1,13 @@
+.popDetailInfo{
+  color: #1677ff !important;
+  cursor: pointer;
+}
+
+.search{
+  margin-bottom: 30px;
+}
+
+.col-arr{
+  display: flex;
+  flex-direction: column;
+}

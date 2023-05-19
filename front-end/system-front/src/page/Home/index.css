@@ -1,0 +1,40 @@
+.logo {
+  font-size: 20px;
+  color: #fff;
+  margin: 20px 20px 0 20px;
+  cursor: pointer;
+}
+
+.layout {
+  height: 100vh;
+}
+
+.sub {
+  color: #fff;
+  margin: 0 30px 0 35px;
+}
+
+.icon {
+  position: relative;
+  right: 0;
+  margin-right: 10px;
+}
+
+.mask {
+  position: absolute;
+  font-size: 16px;
+  line-height: 16px;
+  top: 56px;
+  display: none;
+  background-color: aqua;
+  cursor: pointer;
+}
+
+.icon:hover>.mask {
+  display: block;
+}
+
+.ant-layout-header {
+  display: flex;
+  justify-content: space-between;
+}
