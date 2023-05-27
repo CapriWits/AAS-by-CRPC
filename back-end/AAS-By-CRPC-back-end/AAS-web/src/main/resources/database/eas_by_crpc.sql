@@ -11,7 +11,7 @@
  Target Server Version : 50735
  File Encoding         : 65001
 
- Date: 01/05/2023 16:40:52
+ Date: 24/05/2023 23:08:16
 */
 
 SET NAMES utf8mb4;
@@ -31,7 +31,16 @@ CREATE TABLE `account`  (
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `uniqueId`(`unique_id`) USING BTREE,
   INDEX `password`(`password`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '账户信息表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '账户信息表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of account
+-- ----------------------------
+INSERT INTO `account` VALUES (1, 123456, 'admin@swpu.edu.cn', 'e10adc3949ba59abbe56e057f20f883e', '2023-04-16 10:58:41', '2023-04-16 10:58:45');
+INSERT INTO `account` VALUES (2, 101931061288, 'zhangjiaoshou@swpu.edu.cn', 'e10adc3949ba59abbe56e057f20f883e', '2023-04-11 15:56:00', '2023-04-11 15:56:05');
+INSERT INTO `account` VALUES (3, 201931061399, 'lihua@swpu.edu.cn', 'e10adc3949ba59abbe56e057f20f883e', '2023-04-08 16:20:37', '2023-05-24 23:06:13');
+INSERT INTO `account` VALUES (4, 201931061377, 'zhangxiaoshuai@swpu.edu.cn', 'e10adc3949ba59abbe56e057f20f883e', '2023-05-19 10:52:33', '2023-05-24 23:05:53');
+INSERT INTO `account` VALUES (5, 101931066666, 'chenjiaoshou@swpu.edu.cn', 'e10adc3949ba59abbe56e057f20f883e', '2023-05-19 11:02:15', '2023-05-19 11:07:51');
 
 -- ----------------------------
 -- Table structure for class_schedule
@@ -56,6 +65,10 @@ CREATE TABLE `class_schedule`  (
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '课程表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
+-- Records of class_schedule
+-- ----------------------------
+
+-- ----------------------------
 -- Table structure for course_order
 -- ----------------------------
 DROP TABLE IF EXISTS `course_order`;
@@ -67,7 +80,11 @@ CREATE TABLE `course_order`  (
   `created_at` timestamp(0) NULL DEFAULT NULL COMMENT '创建时间',
   `updated_at` timestamp(0) NULL DEFAULT NULL COMMENT '最后更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '选课订单表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '选课订单表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of course_order
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for role
@@ -80,7 +97,16 @@ CREATE TABLE `role`  (
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `uniqueId`(`unique_id`) USING BTREE,
   INDEX `role`(`role`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '角色表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '角色表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of role
+-- ----------------------------
+INSERT INTO `role` VALUES (1, 123456, 2);
+INSERT INTO `role` VALUES (2, 101931061288, 1);
+INSERT INTO `role` VALUES (3, 201931061399, 0);
+INSERT INTO `role` VALUES (4, 201931061377, 0);
+INSERT INTO `role` VALUES (5, 101931066666, 1);
 
 -- ----------------------------
 -- Table structure for score
@@ -92,7 +118,11 @@ CREATE TABLE `score`  (
   `created_at` timestamp(0) NULL DEFAULT NULL COMMENT '创建时间',
   `updated_at` timestamp(0) NULL DEFAULT NULL COMMENT '最后更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '学生成绩表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '学生成绩表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of score
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for semester
@@ -103,7 +133,15 @@ CREATE TABLE `semester`  (
   `semester` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '学期',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `semester`(`semester`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '学期信息表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '学期信息表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of semester
+-- ----------------------------
+INSERT INTO `semester` VALUES (1, '2019-2020秋');
+INSERT INTO `semester` VALUES (2, '2020-2021春');
+INSERT INTO `semester` VALUES (3, '2021-2022秋');
+INSERT INTO `semester` VALUES (4, '2022-2023春');
 
 -- ----------------------------
 -- Table structure for student_info
@@ -131,7 +169,13 @@ CREATE TABLE `student_info`  (
   `updated_at` timestamp(0) NULL DEFAULT NULL COMMENT '最后更新时间',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `uniqueId_idCardNum`(`unique_id`, `id_card_num`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '学生信息表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '学生信息表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of student_info
+-- ----------------------------
+INSERT INTO `student_info` VALUES (1, 201931061399, 100, '李华', '509876200010010010', '19829981063', '男', '汉族', '20001001', '江苏省', 517.15, '江苏省第一中学', '石工院', '计算结科学与技术', '成都校区', '海油1901', '本科', '2023-04-08 16:24:25', '2023-05-24 23:06:13');
+INSERT INTO `student_info` VALUES (2, 201931061377, 100, '张小帅', '556681200012300030', '19812348769', '男', '汉族', '20001230', '广东省', 600, '广州一中', '计科院', '计算机科学与技术', '成都校区', '计科3班', '本科', '2023-05-19 10:52:33', '2023-05-24 23:05:53');
 
 -- ----------------------------
 -- Table structure for tutor_info
@@ -152,6 +196,12 @@ CREATE TABLE `tutor_info`  (
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `uniqueId`(`unique_id`) USING BTREE,
   INDEX `name`(`name`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '教师信息表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '教师信息表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of tutor_info
+-- ----------------------------
+INSERT INTO `tutor_info` VALUES (1, 101931061288, '张教授', '19828901575', '男', '汉族', '19750901', '计科院', '成都校区', '2023-04-11 15:39:33', '2023-05-19 11:05:07');
+INSERT INTO `tutor_info` VALUES (2, 101931066666, '陈教授', '13122213333', '女', '汉族', '19770910', '计科院', '成都校区', '2023-05-19 11:02:15', '2023-05-19 11:07:51');
 
 SET FOREIGN_KEY_CHECKS = 1;
