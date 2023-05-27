@@ -38,7 +38,7 @@ export default function FindScore() {
 
   return (
     <>
-      <Table dataSource={dataSource} columns={columns} />;
+      <Table dataSource={dataSource} columns={columns} />
     </>
   )
 }

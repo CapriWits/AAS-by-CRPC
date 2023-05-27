@@ -61,7 +61,7 @@ export default function PerformanceManagement() {
 
   return (
     <>
-      <Table dataSource={dataSource} columns={columns} />;
+      <Table dataSource={dataSource} columns={columns} />
     </>
   )
 }

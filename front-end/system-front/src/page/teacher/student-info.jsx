@@ -83,7 +83,7 @@ export default function WithdrawalFromClass() {
   ];
   return (
     <>
-      <Table rowKey={record => record.id} dataSource={info} columns={columns} />;
+      <Table rowKey={record => record.id} dataSource={info} columns={columns} />
       <Modal onOk={postChangeScore} title='修改学生成绩' open={isOpen} onCancel={() => changeIsPop(false)}>
         <Input onChange={changeScore} placeholder='请输入成绩'></Input>
       </Modal>
