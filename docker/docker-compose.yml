@@ -1,0 +1,88 @@
+version: '3'
+
+services:
+  etcd1:
+    image: "quay.io/coreos/etcd:v3.4.7"
+    entrypoint: /usr/local/bin/etcd
+    command:
+      - '--name=etcd1'
+      - '--data-dir=/etcd_data'
+      - '--initial-advertise-peer-urls=http://etcd1:2380'
+      - '--listen-peer-urls=http://0.0.0.0:2380'
+      - '--listen-client-urls=http://0.0.0.0:2379'
+      - '--advertise-client-urls=http://0.0.0.0:2379'
+      - '--initial-cluster-token=etcd-cluster'
+      - '--heartbeat-interval=250'
+      - '--election-timeout=1250'
+      - '--initial-cluster=etcd1=http://etcd1:2380,etcd2=http://etcd2:2380,etcd3=http://etcd3:2380'
+      - '--initial-cluster-state=new'
+    ports:
+      - 2379:2379
+    volumes:
+      - ./store/etcd1/data:/etcd_data
+
+  etcd2:
+    image: "quay.io/coreos/etcd:v3.4.7"
+    entrypoint: /usr/local/bin/etcd
+    command:
+      - '--name=etcd2'
+      - '--data-dir=/etcd_data'
+      - '--initial-advertise-peer-urls=http://etcd2:2380'
+      - '--listen-peer-urls=http://0.0.0.0:2380'
+      - '--listen-client-urls=http://0.0.0.0:2379'
+      - '--advertise-client-urls=http://0.0.0.0:2379'
+      - '--initial-cluster-token=etcd-cluster'
+      - '--heartbeat-interval=250'
+      - '--election-timeout=1250'
+      - '--initial-cluster=etcd1=http://etcd1:2380,etcd2=http://etcd2:2380,etcd3=http://etcd3:2380'
+      - '--initial-cluster-state=new'
+    ports:
+      - 2380:2379
+    volumes:
+      - ./store/etcd2/data:/etcd_data
+
+  etcd3:
+    image: "quay.io/coreos/etcd:v3.4.7"
+    entrypoint: /usr/local/bin/etcd
+    command:
+      - '--name=etcd3'
+      - '--data-dir=/etcd_data'
+      - '--initial-advertise-peer-urls=http://etcd3:2380'
+      - '--listen-peer-urls=http://0.0.0.0:2380'
+      - '--listen-client-urls=http://0.0.0.0:2379'
+      - '--advertise-client-urls=http://0.0.0.0:2379'
+      - '--initial-cluster-token=etcd-cluster'
+      - '--heartbeat-interval=250'
+      - '--election-timeout=1250'
+      - '--initial-cluster=etcd1=http://etcd1:2380,etcd2=http://etcd2:2380,etcd3=http://etcd3:2380'
+      - '--initial-cluster-state=new'
+    ports:
+      - 2381:2379
+    volumes:
+      - ./store/etcd3/data:/etcd_data
+
+  mongo:
+    container_name: mongo
+    image: mongo:5.0.2
+    ports:
+     - 27017:27017
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=admin
+    volumes:
+     - ./store/mongo/data/db:/data/db
+     - ./store/mongo/data/log:/var/log/mongodb
+     - ./store/mongo/data/config:/etc/mongo
+     - ./store/mongo/data/mongodump:/data/db/mongodump
+
+  redis:
+    container_name: redis
+    image: redis:6.2
+    volumes:
+      - ./store/redis/redis.conf:/usr/local/etc/redis/redis.conf
+      - ./store/redis/redis/datadir:/data
+      - ./store/redis/redis/logs:/logs
+    command:
+      redis-server /usr/local/etc/redis/redis.conf
+    ports:
+      - 6379:6379
