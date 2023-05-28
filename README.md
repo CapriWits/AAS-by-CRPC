@@ -41,6 +41,7 @@
 3. Execute scripts `'./mongoInit.sh'` to initialize MongoDB data
 4. Import the SQL file(`eas_by_crpc.sql`) under `"./back-end/AAS-By-CRPC-back-end/AAS-web/src/main/resources/database"` path to MySQL
 5. Modify the application-dev.yml configuration file for modules `'AAS-data-query-service'` & `'AAS-web'`
+6. Go to the `http://localhost:3000/`. Login to administrator account`('123456', '123456')`
 
 
 
