@@ -39,7 +39,8 @@
 1. Enter the `"./docker"`
 2. Type `'docker-compose up -d'` to install dependencies
 3. Execute scripts `'./mongoInit.sh'` to initialize MongoDB data
-4. Modify the application-dev.yml configuration file for modules `'AAS-data-query-service'` & `'AAS-web'`
+4. Import the SQL file(`eas_by_crpc.sql`) under `"./back-end/AAS-By-CRPC-back-end/AAS-web/src/main/resources/database"` path to MySQL
+5. Modify the application-dev.yml configuration file for modules `'AAS-data-query-service'` & `'AAS-web'`
 
 
 
